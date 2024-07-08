@@ -1,6 +1,7 @@
 package DAO;
 
 import java.sql.Connection;
+import java.util.List;
 
 import Entidades.EmpresaReceptora;
 
@@ -81,6 +82,22 @@ public class EmpresaReceptoraDAO {
             e.printStackTrace();
         }
         return empresaReceptora;
+    }
+
+    public List<EmpresaReceptora> obtenerEmpresasReceptoras() {
+        List<EmpresaReceptora> empresasReceptoras = null;
+        try {
+            String sql = "SELECT * FROM EmpresaReceptora";
+            java.sql.PreparedStatement pst = this.conexion.prepareStatement(sql);
+            java.sql.ResultSet rs = pst.executeQuery();
+            empresasReceptoras = new java.util.ArrayList<>();
+            while (rs.next()) {
+                empresasReceptoras.add(new EmpresaReceptora(rs.getString("RUC"), rs.getString("nombre"), rs.getString("tipo")));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return empresasReceptoras;
     }
 
 }
