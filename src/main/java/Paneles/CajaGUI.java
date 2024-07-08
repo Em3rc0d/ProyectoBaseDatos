@@ -16,6 +16,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class CajaGUI extends JFrame {
+
     private CajaDAO cajaDAO;
     private JTextField txtIdCaja, txtIdArea, txtMonto, txtTopeMovimiento;
     private JTable tableCajas;
@@ -25,16 +26,16 @@ public class CajaGUI extends JFrame {
         this.cajaDAO = new CajaDAO(conexion);
         initComponents();
         loadData();
-        setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(600, 400);
         setVisible(true);
+        setLocationRelativeTo(null);
     }
 
     private void initComponents() {
         setTitle("Gestión de Cajas");
 
-        JPanel panelForm = new JPanel(new GridLayout(5, 2));
+        JPanel panelForm = new JPanel(new GridLayout(7, 3));
 
         panelForm.add(new JLabel("ID Caja:"));
         txtIdCaja = new JTextField();
@@ -49,7 +50,7 @@ public class CajaGUI extends JFrame {
         txtMonto = new JTextField();
         panelForm.add(txtMonto);
 
-        panelForm.add(new JLabel("Tope Movimiento:"));
+        panelForm.add(new JLabel("Tipe Movimiento:"));
         txtTopeMovimiento = new JTextField();
         panelForm.add(txtTopeMovimiento);
 
@@ -89,6 +90,8 @@ public class CajaGUI extends JFrame {
         tableCajas = new JTable(model);
         add(new JScrollPane(tableCajas), BorderLayout.CENTER);
 
+        JPanel panelSouth = new JPanel(new GridLayout(2, 1));
+
         JButton btnActualizarTabla = new JButton("Actualizar Tabla");
         btnActualizarTabla.addActionListener(new ActionListener() {
             @Override
@@ -96,8 +99,18 @@ public class CajaGUI extends JFrame {
                 loadData();
             }
         });
-        add(btnActualizarTabla, BorderLayout.SOUTH);
+        panelSouth.add(btnActualizarTabla);
 
+        JButton btnRetornar = new JButton("Retornar");
+        btnRetornar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                retornar();
+            }
+        });
+        panelSouth.add(btnRetornar);
+
+        add(panelSouth, BorderLayout.SOUTH);
         add(panelForm, BorderLayout.WEST);
     }
 
@@ -107,10 +120,10 @@ public class CajaGUI extends JFrame {
             List<Caja> cajas = cajaDAO.obtenerCajas();
             for (Caja caja : cajas) {
                 model.addRow(new Object[]{
-                        caja.getIdCaja(),
-                        caja.getIdArea(),
-                        caja.getMonto(),
-                        caja.getTopeMovimiento()
+                    caja.getIdCaja(),
+                    caja.getIdArea(),
+                    caja.getMonto(),
+                    caja.getTopeMovimiento()
                 });
             }
         } catch (SQLException e) {
@@ -161,6 +174,11 @@ public class CajaGUI extends JFrame {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error al eliminar la caja.");
         }
+    }
+    
+        private void retornar() {
+        new Main().setVisible(true);
+        setVisible(false);
     }
 
     public static void main(String[] args) {

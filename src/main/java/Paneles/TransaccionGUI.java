@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class TransaccionGUI extends JFrame {
+
     private TransaccionDAO transaccionDAO;
     private JTextField txtIdTransaccion, txtIdDocumento, txtIdEstado, txtFechaTransaccion, txtTipoTransaccion, txtDescripcion;
     private JTable tableTransacciones;
@@ -24,17 +25,17 @@ public class TransaccionGUI extends JFrame {
         this.transaccionDAO = new TransaccionDAO(conexion);
         initComponents();
         loadData();
-        setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 600);
         setVisible(true);
+        setLocationRelativeTo(null);
     }
 
     private void initComponents() {
         setTitle("Gestión de Transacciones");
 
         JPanel panelForm = new JPanel(new GridLayout(7, 2));
-
+        
         panelForm.add(new JLabel("ID Documento:"));
         txtIdDocumento = new JTextField();
         panelForm.add(txtIdDocumento);
@@ -93,6 +94,8 @@ public class TransaccionGUI extends JFrame {
         tableTransacciones = new JTable(model);
         add(new JScrollPane(tableTransacciones), BorderLayout.CENTER);
 
+        JPanel panelSouth = new JPanel(new GridLayout(2, 1));
+
         JButton btnActualizarTabla = new JButton("Actualizar Tabla");
         btnActualizarTabla.addActionListener(new ActionListener() {
             @Override
@@ -100,8 +103,18 @@ public class TransaccionGUI extends JFrame {
                 loadData();
             }
         });
-        add(btnActualizarTabla, BorderLayout.SOUTH);
+        panelSouth.add(btnActualizarTabla);
 
+        JButton btnRetornar = new JButton("Retornar");
+        btnRetornar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                retornar();
+            }
+        });
+        panelSouth.add(btnRetornar);
+
+        add(panelSouth, BorderLayout.SOUTH);
         add(panelForm, BorderLayout.WEST);
     }
 
@@ -110,12 +123,12 @@ public class TransaccionGUI extends JFrame {
         List<Transaccion> transacciones = transaccionDAO.obtenerTodasTransacciones();
         for (Transaccion transaccion : transacciones) {
             model.addRow(new Object[]{
-                    transaccion.getIdTransaccion(),
-                    transaccion.getDocumento_idDocumento(),
-                    transaccion.getEstado_idEstado(),
-                    transaccion.getFechaTransaccion(),
-                    transaccion.getTipoTransaccion(),
-                    transaccion.getDescripcion()
+                transaccion.getIdTransaccion(),
+                transaccion.getDocumento_idDocumento(),
+                transaccion.getEstado_idEstado(),
+                transaccion.getFechaTransaccion(),
+                transaccion.getTipoTransaccion(),
+                transaccion.getDescripcion()
             });
         }
     }
@@ -168,6 +181,11 @@ public class TransaccionGUI extends JFrame {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error al eliminar la transacción.");
         }
+    }
+    
+    private void retornar() {
+        new Main().setVisible(true);
+        setVisible(false);
     }
 
     public static void main(String[] args) {

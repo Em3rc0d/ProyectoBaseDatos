@@ -6,6 +6,7 @@ package Paneles;
 
 import Conexion.ConexionBD;
 import java.sql.Connection;
+import javax.swing.JOptionPane;
 
 public class Main extends javax.swing.JFrame {
         ConexionBD conexion = new ConexionBD();
@@ -28,6 +29,9 @@ public class Main extends javax.swing.JFrame {
         btnCaja = new javax.swing.JButton();
         btnDocumento = new javax.swing.JButton();
         btnTransaccion = new javax.swing.JButton();
+        btnEmpresaReceptora = new javax.swing.JButton();
+        btnCajero = new javax.swing.JButton();
+        btnSalir = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -36,6 +40,7 @@ public class Main extends javax.swing.JFrame {
         jLabel1.setText("Sistema de Gestión Caja Chica");
 
         btnCaja.setText("Caja");
+        btnCaja.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.black, null));
         btnCaja.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCajaActionPerformed(evt);
@@ -43,6 +48,7 @@ public class Main extends javax.swing.JFrame {
         });
 
         btnDocumento.setText("Documento");
+        btnDocumento.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.black, null));
         btnDocumento.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDocumentoActionPerformed(evt);
@@ -50,9 +56,34 @@ public class Main extends javax.swing.JFrame {
         });
 
         btnTransaccion.setText("Transacción");
+        btnTransaccion.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.black, null));
         btnTransaccion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnTransaccionActionPerformed(evt);
+            }
+        });
+
+        btnEmpresaReceptora.setText("Empresa Receptora");
+        btnEmpresaReceptora.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.black, null));
+        btnEmpresaReceptora.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEmpresaReceptoraActionPerformed(evt);
+            }
+        });
+
+        btnCajero.setText("Cajero");
+        btnCajero.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.black, null));
+        btnCajero.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCajeroActionPerformed(evt);
+            }
+        });
+
+        btnSalir.setText("Salir");
+        btnSalir.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.black, null));
+        btnSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalirActionPerformed(evt);
             }
         });
 
@@ -62,15 +93,15 @@ public class Main extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(150, 150, 150)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnTransaccion, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btnDocumento, javax.swing.GroupLayout.Alignment.TRAILING)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(158, 158, 158)
-                        .addComponent(btnCaja)))
+                .addGap(15, 15, 15)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnSalir, javax.swing.GroupLayout.DEFAULT_SIZE, 369, Short.MAX_VALUE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(btnDocumento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnCaja, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnTransaccion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnEmpresaReceptora, javax.swing.GroupLayout.DEFAULT_SIZE, 369, Short.MAX_VALUE)
+                        .addComponent(btnCajero, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -78,13 +109,19 @@ public class Main extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(17, 17, 17)
                 .addComponent(jLabel1)
-                .addGap(26, 26, 26)
+                .addGap(18, 18, 18)
                 .addComponent(btnCaja)
                 .addGap(18, 18, 18)
                 .addComponent(btnDocumento)
                 .addGap(18, 18, 18)
                 .addComponent(btnTransaccion)
-                .addContainerGap(127, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(btnEmpresaReceptora)
+                .addGap(18, 18, 18)
+                .addComponent(btnCajero)
+                .addGap(18, 18, 18)
+                .addComponent(btnSalir)
+                .addContainerGap(30, Short.MAX_VALUE))
         );
 
         pack();
@@ -107,6 +144,27 @@ public class Main extends javax.swing.JFrame {
         new TransaccionGUI(conn).setVisible(true);
         setVisible(false);
     }//GEN-LAST:event_btnTransaccionActionPerformed
+
+    private void btnEmpresaReceptoraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEmpresaReceptoraActionPerformed
+        // TODO add your handling code here:
+        new EmpresaReceptoraGUI(conn).setVisible(true);
+        setVisible(false);
+    }//GEN-LAST:event_btnEmpresaReceptoraActionPerformed
+
+    private void btnCajeroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCajeroActionPerformed
+        // TODO add your handling code here:
+        new CajeroGUI(conn).setVisible(true);
+        setVisible(false);
+    }//GEN-LAST:event_btnCajeroActionPerformed
+
+    private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
+        // TODO add your handling code here:
+        int confirm = JOptionPane.showConfirmDialog(this, "¿Estás seguro que deseas salir?", "Confirmar salida", JOptionPane.YES_NO_OPTION);
+        if (confirm == JOptionPane.YES_OPTION) {
+            dispose(); // Cierra la ventana actual
+            System.exit(0); // Termina la ejecución del programa
+        }
+    }//GEN-LAST:event_btnSalirActionPerformed
 
     /**
      * @param args the command line arguments
@@ -145,7 +203,10 @@ public class Main extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCaja;
+    private javax.swing.JButton btnCajero;
     private javax.swing.JButton btnDocumento;
+    private javax.swing.JButton btnEmpresaReceptora;
+    private javax.swing.JButton btnSalir;
     private javax.swing.JButton btnTransaccion;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables

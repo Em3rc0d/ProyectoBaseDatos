@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class EmpresaReceptoraGUI extends JFrame {
+
     private EmpresaReceptoraDAO empresaReceptoraDAO;
     private JTextField txtIdEmpresaReceptora, txtRUC, txtNombre, txtTipo;
     private JTable tableEmpresasReceptoras;
@@ -23,10 +24,10 @@ public class EmpresaReceptoraGUI extends JFrame {
         this.empresaReceptoraDAO = new EmpresaReceptoraDAO(conexion);
         initComponents();
         loadData();
-        setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(600, 400);
         setVisible(true);
+        setLocationRelativeTo(null);
     }
 
     private void initComponents() {
@@ -81,6 +82,8 @@ public class EmpresaReceptoraGUI extends JFrame {
         tableEmpresasReceptoras = new JTable(model);
         add(new JScrollPane(tableEmpresasReceptoras), BorderLayout.CENTER);
 
+        JPanel panelSouth = new JPanel(new GridLayout(2, 1));
+
         JButton btnActualizarTabla = new JButton("Actualizar Tabla");
         btnActualizarTabla.addActionListener(new ActionListener() {
             @Override
@@ -88,8 +91,18 @@ public class EmpresaReceptoraGUI extends JFrame {
                 loadData();
             }
         });
-        add(btnActualizarTabla, BorderLayout.SOUTH);
+        panelSouth.add(btnActualizarTabla);
 
+        JButton btnRetornar = new JButton("Retornar");
+        btnRetornar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                retornar();
+            }
+        });
+        panelSouth.add(btnRetornar);
+
+        add(panelSouth, BorderLayout.SOUTH);
         add(panelForm, BorderLayout.WEST);
     }
 
@@ -134,6 +147,11 @@ public class EmpresaReceptoraGUI extends JFrame {
         empresaReceptoraDAO.eliminar(empresaReceptora);
         JOptionPane.showMessageDialog(this, "Empresa Receptora eliminada correctamente.");
         loadData();
+    }
+
+    private void retornar() {
+        new Main().setVisible(true);
+        setVisible(false);
     }
 
     public static void main(String[] args) {

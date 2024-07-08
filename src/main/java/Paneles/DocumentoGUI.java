@@ -1,4 +1,5 @@
 package Paneles;
+
 import Conexion.ConexionBD;
 import DAO.DocumentoDAO;
 import Entidades.Documento;
@@ -13,6 +14,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class DocumentoGUI extends JFrame {
+
     private DocumentoDAO documentoDAO;
     private JTextField txtIdDocumento, txtIdCaja, txtIdCajero, txtIdEmpresa, txtIdMotivo, txtTipoDocumento, txtDescripcion, txtMonto;
     private JTable tableDocumentos;
@@ -22,10 +24,10 @@ public class DocumentoGUI extends JFrame {
         this.documentoDAO = new DocumentoDAO(conexion);
         initComponents();
         loadData();
-        setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 600);
         setVisible(true);
+        setLocationRelativeTo(null);
     }
 
     private void initComponents() {
@@ -101,6 +103,8 @@ public class DocumentoGUI extends JFrame {
         tableDocumentos = new JTable(model);
         add(new JScrollPane(tableDocumentos), BorderLayout.CENTER);
 
+        JPanel panelSouth = new JPanel(new GridLayout(2, 1));
+
         JButton btnActualizarTabla = new JButton("Actualizar Tabla");
         btnActualizarTabla.addActionListener(new ActionListener() {
             @Override
@@ -108,8 +112,18 @@ public class DocumentoGUI extends JFrame {
                 loadData();
             }
         });
-        add(btnActualizarTabla, BorderLayout.SOUTH);
+        panelSouth.add(btnActualizarTabla);
 
+        JButton btnRetornar = new JButton("Retornar");
+        btnRetornar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                retornar();
+            }
+        });
+        panelSouth.add(btnRetornar);
+
+        add(panelSouth, BorderLayout.SOUTH);
         add(panelForm, BorderLayout.WEST);
     }
 
@@ -119,14 +133,14 @@ public class DocumentoGUI extends JFrame {
             List<Documento> documentos = documentoDAO.obtenerDocumentos();
             for (Documento documento : documentos) {
                 model.addRow(new Object[]{
-                        documento.getIdDocumento(),
-                        documento.getIdCaja(),
-                        documento.getIdCajero(),
-                        documento.getIdEmpresa(),
-                        documento.getIdMotivo(),
-                        documento.getTipoDocumento(),
-                        documento.getDescripcion(),
-                        documento.getMonto()
+                    documento.getIdDocumento(),
+                    documento.getIdCaja(),
+                    documento.getIdCajero(),
+                    documento.getIdEmpresa(),
+                    documento.getIdMotivo(),
+                    documento.getTipoDocumento(),
+                    documento.getDescripcion(),
+                    documento.getMonto()
                 });
             }
         } catch (SQLException e) {
@@ -184,6 +198,11 @@ public class DocumentoGUI extends JFrame {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error al eliminar el documento.");
         }
+    }
+    
+    private void retornar() {
+        new Main().setVisible(true);
+        setVisible(false);
     }
 
     public static void main(String[] args) {

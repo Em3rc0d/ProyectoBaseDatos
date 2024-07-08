@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class CajeroGUI extends JFrame {
+
     private CajeroDAO cajeroDAO;
     private JTextField txtIdCajero, txtNombre, txtApellido, txtEmail, txtTelefono;
     private JTable tableCajeros;
@@ -23,17 +24,17 @@ public class CajeroGUI extends JFrame {
         this.cajeroDAO = new CajeroDAO(conexion);
         initComponents();
         loadData();
-        setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(600, 400);
         setVisible(true);
+        setLocationRelativeTo(null);
     }
 
     private void initComponents() {
         setTitle("Gestión de Cajeros");
 
         JPanel panelForm = new JPanel(new GridLayout(6, 2));
-
+        
         panelForm.add(new JLabel("Nombre:"));
         txtNombre = new JTextField();
         panelForm.add(txtNombre);
@@ -87,6 +88,8 @@ public class CajeroGUI extends JFrame {
         tableCajeros = new JTable(model);
         add(new JScrollPane(tableCajeros), BorderLayout.CENTER);
 
+        JPanel panelSouth = new JPanel(new GridLayout(2, 1));
+
         JButton btnActualizarTabla = new JButton("Actualizar Tabla");
         btnActualizarTabla.addActionListener(new ActionListener() {
             @Override
@@ -94,22 +97,32 @@ public class CajeroGUI extends JFrame {
                 loadData();
             }
         });
-        add(btnActualizarTabla, BorderLayout.SOUTH);
+        panelSouth.add(btnActualizarTabla);
 
+        JButton btnRetornar = new JButton("Retornar");
+        btnRetornar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                retornar();
+            }
+        });
+        panelSouth.add(btnRetornar);
+
+        add(panelSouth, BorderLayout.SOUTH);
         add(panelForm, BorderLayout.WEST);
     }
-
+    
     private void loadData() {
         model.setRowCount(0);
         try {
             List<Cajero> cajeros = cajeroDAO.obtenerCajeros();
             for (Cajero cajero : cajeros) {
                 model.addRow(new Object[]{
-                        cajero.getIdCajero(),
-                        cajero.getNombre(),
-                        cajero.getApellido(),
-                        cajero.getEmail(),
-                        cajero.getTelefono()
+                    cajero.getIdCajero(),
+                    cajero.getNombre(),
+                    cajero.getApellido(),
+                    cajero.getEmail(),
+                    cajero.getTelefono()
                 });
             }
         } catch (SQLException e) {
@@ -163,6 +176,11 @@ public class CajeroGUI extends JFrame {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error al eliminar el cajero.");
         }
+    }
+
+    private void retornar() {
+        new Main().setVisible(true);
+        setVisible(false);
     }
 
     public static void main(String[] args) {
