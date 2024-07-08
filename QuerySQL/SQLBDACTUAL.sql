@@ -73,21 +73,24 @@ CREATE TABLE Transaccion (
     CONSTRAINT FK_Transaccion_Estado FOREIGN KEY (Estado_idEstado) REFERENCES Estado(idEstado)
 );
 
--- Populate Area table
 INSERT INTO Area (idArea, nombre)
 VALUES
-    (1, 'Administraci髇'),
+    (1, 'Administraci贸n'),
     (2, 'Recursos Humanos'),
     (3, 'Finanzas'),
     (4, 'Ventas'),
-    (5, 'Producci髇'),
+    (5, 'Producci贸n'),
     (6, 'Servicio al Cliente'),
     (7, 'Desarrollo de Producto'),
-    (8, 'Investigaci髇 y Desarrollo'),
+    (8, 'Investigaci贸n y Desarrollo'),
     (9, 'Marketing'),
-    (10, 'Log韘tica');
+    (10, 'Log铆stica'),
+    (11, 'IT'),
+    (12, 'Compras'),
+    (13, 'Legales'),
+    (14, 'Calidad'),
+    (15, 'Almac茅n');
 
--- Populate Caja table
 INSERT INTO Caja (idCaja, Area_idArea, monto, topeMovimiento)
 VALUES
     (1, 1, 10000.00, 5000.00),
@@ -99,37 +102,49 @@ VALUES
     (7, 7, 6000.00, 3000.00),
     (8, 8, 25000.00, 12000.00),
     (9, 9, 18000.00, 9000.00),
-    (10, 10, 5000.00, 2500.00);
+    (10, 10, 5000.00, 2500.00),
+    (11, 11, 7000.00, 3500.00),
+    (12, 12, 16000.00, 8000.00),
+    (13, 13, 9000.00, 4500.00),
+    (14, 14, 22000.00, 11000.00),
+    (15, 15, 13000.00, 6500.00);
 
--- Populate Cajero table
 INSERT INTO Cajero (idCajero, nombre, apellido, email, telefono)
 VALUES
-    (1, 'Juan', 'G髆ez', 'juangomez@example.com', '123-456-7890'),
-    (2, 'Mar韆', 'L髉ez', 'marialopez@example.com', '987-654-3210'),
-    (3, 'Carlos', 'Mart韓ez', 'carlosmartinez@example.com', '555-123-4567'),
-    (4, 'Ana', 'Rodr韌uez', 'anarodriguez@example.com', '789-321-6540'),
-    (5, 'Pedro', 'S醤chez', 'pedrosanchez@example.com', '456-789-0123'),
-    (6, 'Laura', 'Garc韆', 'lauragarcia@example.com', '321-654-9870'),
-    (7, 'Diego', 'P閞ez', 'diegoperez@example.com', '666-999-8888'),
-    (8, 'Sof韆', 'D韆z', 'sofiadiaz@example.com', '222-333-4444'),
-    (9, 'Javier', 'Fern醤dez', 'javierfernandez@example.com', '777-888-9999'),
-    (10, 'Elena', 'Vargas', 'elenavargas@example.com', '111-222-3333');
+    (1, 'Juan', 'G贸mez', 'juangomez@example.com', '123-456-7890'),
+    (2, 'Mar铆a', 'L贸pez', 'marialopez@example.com', '987-654-3210'),
+    (3, 'Carlos', 'Mart铆nez', 'carlosmartinez@example.com', '555-123-4567'),
+    (4, 'Ana', 'Rodr铆guez', 'anarodriguez@example.com', '789-321-6540'),
+    (5, 'Pedro', 'S谩nchez', 'pedrosanchez@example.com', '456-789-0123'),
+    (6, 'Laura', 'Garc铆a', 'lauragarcia@example.com', '321-654-9870'),
+    (7, 'Diego', 'P茅rez', 'diegoperez@example.com', '666-999-8888'),
+    (8, 'Sof铆a', 'D铆az', 'sofiadiaz@example.com', '222-333-4444'),
+    (9, 'Javier', 'Fern谩ndez', 'javierfernandez@example.com', '777-888-9999'),
+    (10, 'Elena', 'Vargas', 'elenavargas@example.com', '111-222-3333'),
+    (11, 'Luis', 'Hern谩ndez', 'luishernandez@example.com', '444-555-6666'),
+    (12, 'Marta', 'Ramos', 'martaramos@example.com', '555-666-7777'),
+    (13, 'Antonio', 'Ruiz', 'antonioruiz@example.com', '666-777-8888'),
+    (14, 'Claudia', 'Mendoza', 'claudiamendoza@example.com', '777-888-9990'),
+    (15, 'Miguel', 'Castro', 'miguelcastro@example.com', '888-999-0001');
 
--- Populate EmpresaReceptora table with well-known companies
 INSERT INTO EmpresaReceptora (idEmpresaReceptora, RUC, nombre, tipo)
 VALUES
-    (1, '12345678901', 'Apple Inc.', 'Tecnolog韆'),
-    (2, '23456789012', 'Microsoft Corporation', 'Tecnolog韆'),
-    (3, '34567890123', 'Amazon.com Inc.', 'Comercio electr髇ico'),
-    (4, '45678901234', 'Alphabet Inc. (Google)', 'Tecnolog韆'),
+    (1, '12345678901', 'Apple Inc.', 'Tecnolog铆a'),
+    (2, '23456789012', 'Microsoft Corporation', 'Tecnolog铆a'),
+    (3, '34567890123', 'Amazon.com Inc.', 'Comercio electr贸nico'),
+    (4, '45678901234', 'Alphabet Inc. (Google)', 'Tecnolog铆a'),
     (5, '56789012345', 'Tesla, Inc.', 'Automotriz'),
     (6, '67890123456', 'Facebook, Inc.', 'Redes sociales'),
-    (7, '78901234567', 'Samsung Electronics Co., Ltd.', 'Electr髇ica'),
+    (7, '78901234567', 'Samsung Electronics Co., Ltd.', 'Electr贸nica'),
     (8, '89012345678', 'Toyota Motor Corporation', 'Automotriz'),
     (9, '90123456789', 'Walmart Inc.', 'Retail'),
-    (10, '01234567890', 'Johnson & Johnson', 'Farmac閡tica');
+    (10, '01234567890', 'Johnson & Johnson', 'Farmac茅utica'),
+    (11, '11223344556', 'IBM', 'Tecnolog铆a'),
+    (12, '22334455667', 'Sony', 'Electr贸nica'),
+    (13, '33445566778', 'Intel', 'Tecnolog铆a'),
+    (14, '44556677889', 'HP', 'Tecnolog铆a'),
+    (15, '55667788990', 'Cisco', 'Redes');
 
--- Populate Estado table
 INSERT INTO Estado (idEstado, reporteEstado)
 VALUES
     (1, 'Pendiente'),
@@ -137,23 +152,67 @@ VALUES
     (3, 'Aprobado'),
     (4, 'Rechazado'),
     (5, 'Cancelado'),
-    (6, 'En revisi髇'),
+    (6, 'En revisi贸n'),
     (7, 'Finalizado'),
     (8, 'Suspendido'),
     (9, 'Archivado'),
-    (10, 'En espera');
+    (10, 'En espera'),
+    (11, 'Anulado'),
+    (12, 'Reprogramado'),
+    (13, 'Parcialmente aprobado'),
+    (14, 'En evaluaci贸n'),
+    (15, 'Completado');
 
--- Populate Movimiento table
 INSERT INTO Movimiento (idMovimiento, tipoMovimiento)
 VALUES
-    (1, 'Dep髎ito'),
+    (1, 'Dep贸sito'),
     (2, 'Retiro'),
     (3, 'Transferencia'),
     (4, 'Pago'),
     (5, 'Compra'),
     (6, 'Venta'),
-    (7, 'Devoluci髇'),
+    (7, 'Devoluci贸n'),
     (8, 'Ajuste'),
-    (9, 'Reversi髇'),
-    (10, 'Reembolso');
+    (9, 'Reversi贸n'),
+    (10, 'Reembolso'),
+    (11, 'Cr茅dito'),
+    (12, 'D茅bito'),
+    (13, 'Inversi贸n'),
+    (14, 'Dividendo'),
+    (15, 'Gasto');
 
+INSERT INTO Documento (idDocumento, Caja_idCaja, Cajero_idCajero, EmpresaReceptora_idEmpresaReceptora, Movimiento_idMotivo, tipoDocumento, descripcion, monto)
+VALUES
+    (1, 1, 1, 1, 1, 'Factura', 'Pago por servicios', 1500.00),
+    (2, 2, 2, 2, 2, 'Recibo', 'Compra de materiales', 2000.00),
+    (3, 3, 3, 3, 3, 'Nota de cr茅dito', 'Devoluci贸n de productos', 500.00),
+    (4, 4, 4, 4, 4, 'Orden de compra', 'Compra de equipos', 3000.00),
+    (5, 5, 5, 5, 5, 'Transferencia', 'Transferencia de fondos', 2500.00),
+    (6, 6, 6, 6, 6, 'Factura', 'Pago de servicios', 3500.00),
+    (7, 7, 7, 7, 7, 'Recibo', 'Compra de suministros', 4500.00),
+    (8, 8, 8, 8, 8, 'Nota de d茅bito', 'Devoluci贸n de fondos', 5500.00),
+    (9, 9, 9, 9, 9, 'Orden de pago', 'Pago de deuda', 6500.00),
+    (10, 10, 10, 10, 10, 'Transferencia', 'Transferencia interbancaria', 7500.00),
+    (11, 11, 11, 11, 11, 'Factura', 'Pago por servicios', 1500.00),
+    (12, 12, 12, 12, 12, 'Recibo', 'Compra de materiales', 2000.00),
+    (13, 13, 13, 13, 13, 'Nota de cr茅dito', 'Devoluci贸n de productos', 500.00),
+    (14, 14, 14, 14, 14, 'Orden de compra', 'Compra de equipos', 3000.00),
+    (15, 15, 15, 15, 15, 'Transferencia', 'Transferencia de fondos', 2500.00);
+
+INSERT INTO Transaccion (idTransaccion, Documento_idDocumento, Estado_idEstado, fechaTransaccion, tipoTransaccion, descripcion)
+VALUES
+    (1, 1, 1, '2024-07-01', 'Dep贸sito', 'Dep贸sito de efectivo'),
+    (2, 2, 2, '2024-07-02', 'Retiro', 'Retiro de fondos'),
+    (3, 3, 3, '2024-07-03', 'Pago', 'Pago de factura'),
+    (4, 4, 4, '2024-07-04', 'Compra', 'Compra de suministros'),
+    (5, 5, 5, '2024-07-05', 'Venta', 'Venta de productos'),
+    (6, 6, 6, '2024-07-06', 'Dep贸sito', 'Dep贸sito en cuenta'),
+    (7, 7, 7, '2024-07-07', 'Retiro', 'Retiro de efectivo'),
+    (8, 8, 8, '2024-07-08', 'Pago', 'Pago de servicios'),
+    (9, 9, 9, '2024-07-09', 'Compra', 'Compra de activos'),
+    (10, 10, 10, '2024-07-10', 'Venta', 'Venta de bienes'),
+    (11, 1, 1, '2024-07-01', 'Dep贸sito', 'Dep贸sito de efectivo'),
+    (12, 2, 2, '2024-07-02', 'Retiro', 'Retiro de fondos'),
+    (13, 3, 3, '2024-07-03', 'Pago', 'Pago de factura'),
+    (14, 4, 4, '2024-07-04', 'Compra', 'Compra de suministros'),
+    (15, 5, 5, '2024-07-05', 'Venta', 'Venta de productos');
