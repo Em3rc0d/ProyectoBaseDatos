@@ -1,6 +1,8 @@
 package DAO;
 
 import java.sql.Connection;
+import java.util.ArrayList;
+import java.util.List;
 
 import Entidades.Transaccion;
 
@@ -93,5 +95,46 @@ public class TransaccionDAO {
             e.printStackTrace();
         }
         return transaccion;
+    }
+
+    public Transaccion obtenerUltimaTransaccion() {
+        Transaccion transaccion = null;
+        try {
+            String sql = "SELECT * FROM Transaccion ORDER BY idTransaccion DESC LIMIT 1";
+            java.sql.PreparedStatement pst = this.conexion.prepareStatement(sql);
+            java.sql.ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                transaccion = new Transaccion(rs.getInt("Documento_idDocumento"),
+                        rs.getInt("Estado_idEstado"),
+                        rs.getDate("fechaTransaccion"),
+                        rs.getString("tipoTransaccion"),
+                        rs.getString("descripcion"));
+                transaccion.setIdTransaccion(rs.getInt("idTransaccion"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return transaccion;
+    }
+
+    public List<Transaccion> obtenerTodasTransacciones() {
+        List<Transaccion> transacciones = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM Transaccion";
+            java.sql.PreparedStatement pst = this.conexion.prepareStatement(sql);
+            java.sql.ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                Transaccion transaccion = new Transaccion(rs.getInt("Documento_idDocumento"),
+                        rs.getInt("Estado_idEstado"),
+                        rs.getDate("fechaTransaccion"),
+                        rs.getString("tipoTransaccion"),
+                        rs.getString("descripcion"));
+                transaccion.setIdTransaccion(rs.getInt("idTransaccion"));
+                transacciones.add(transaccion);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return transacciones;   
     }
 }

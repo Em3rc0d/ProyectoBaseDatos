@@ -19,6 +19,9 @@ public class Transaccion {
         this.descripcion = descripcion;
     }
 
+    public Transaccion(int idTransaccion){
+        this.idTransaccion = idTransaccion;
+    }
     public int getIdTransaccion() {
         return idTransaccion;
     }
