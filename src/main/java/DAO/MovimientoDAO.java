@@ -45,7 +45,7 @@ public class MovimientoDAO {
         }
     }
 
-    public Movimiento buscar(int idMovimiento) {
+    public Movimiento obtener(int idMovimiento) {
         Movimiento movimiento = null;
         try {
             String sql = "SELECT * FROM Movimiento WHERE idMovimiento = ?";
@@ -62,7 +62,7 @@ public class MovimientoDAO {
         return movimiento;
     }
 
-    public Movimiento buscar(String tipoMovimiento) {
+    public Movimiento obtener(String tipoMovimiento) {
         Movimiento movimiento = null;
         try {
             String sql = "SELECT * FROM Movimiento WHERE tipoMovimiento = ?";

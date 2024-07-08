@@ -44,8 +44,7 @@ public class AreaDAO {
             e.printStackTrace();
         }
     }   
-
-    public Area buscar(int idArea) {
+    public Area obtener(int idArea) {
         Area area = null;
         try {
             String sql = "SELECT * FROM Area WHERE idArea = ?";
@@ -62,7 +61,7 @@ public class AreaDAO {
         return area;
     }
 
-    public Area buscar(String nombre) {
+    public Area obtener(String nombre) {
         Area area = null;
         try {
             String sql = "SELECT * FROM Area WHERE nombre = ?";
@@ -77,5 +76,22 @@ public class AreaDAO {
             e.printStackTrace();
         }
         return area;
+    }
+
+    public java.util.List<Area> obtenerTodos() {
+        java.util.List<Area> areas = new java.util.ArrayList<Area>();
+        try {   
+            String sql = "SELECT * FROM Area";
+            java.sql.PreparedStatement pst = this.conexion.prepareStatement(sql);
+            java.sql.ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                Area area = new Area(rs.getString("nombre"));
+                area.setIdArea(rs.getInt("idArea"));
+                areas.add(area);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();    
+        }
+        return areas;
     }
 }
