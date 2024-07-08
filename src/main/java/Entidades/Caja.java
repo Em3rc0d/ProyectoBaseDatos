@@ -6,6 +6,12 @@ public class Caja {
     double monto;
     double topeMovimiento;
     
+    public Caja(int idCaja, int idArea, double monto, double topeMovimiento) {
+        this.idCaja = idCaja;
+        this.idArea = idArea;
+        this.monto = monto;
+        this.topeMovimiento = topeMovimiento;
+    }
     public Caja(int idArea, double monto, double topeMovimiento) {
         this.idArea = idArea;
         this.monto = monto;

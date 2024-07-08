@@ -52,7 +52,7 @@ public class CajaDAO {
 
             List<Caja> cajas = new ArrayList<>();
             while (rs.next()) {
-                Caja caja = new Caja(rs.getInt("Area_idArea"), rs.getDouble("monto"), rs.getDouble("topeMovimiento"));
+                Caja caja = new Caja(rs.getInt("idCaja"), rs.getInt("Area_idArea"), rs.getDouble("monto"), rs.getDouble("topeMovimiento"));
                 cajas.add(caja);
             }
             return cajas;
@@ -65,7 +65,7 @@ public class CajaDAO {
             pst.setInt(1, idCaja);
             try (ResultSet rs = pst.executeQuery()) {
                 if (rs.next()) {
-                    return new Caja(rs.getInt("Area_idArea"), rs.getDouble("monto"), rs.getDouble("topeMovimiento"));
+                    return new Caja(rs.getInt("idCaja"), rs.getInt("Area_idArea"), rs.getDouble("monto"), rs.getDouble("topeMovimiento"));
                 }
                 return null;
             }
