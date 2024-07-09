@@ -18,11 +18,11 @@ public class DocumentoDAO {
     }
 
     public void insertar(Documento documento) throws SQLException {
-        String sql = "INSERT INTO Documento (Caja_idCaja, Cajero_idCajero, EmpresaReceptora_idEmpresaReceptora, Movimiento_idMotivo, tipoDocumento, descripcion, monto) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Documento (Caja_idCaja, Cajero_idCajero, EmpresaReceptora_RUC, Movimiento_idMotivo, tipoDocumento, descripcion, monto) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement pst = this.conexion.prepareStatement(sql)) {
             pst.setInt(1, documento.getIdCaja());
             pst.setInt(2, documento.getIdCajero());
-            pst.setInt(3, documento.getIdEmpresa());
+            pst.setString(3, documento.getIdEmpresa());
             pst.setInt(4, documento.getIdMotivo());
             pst.setString(5, documento.getTipoDocumento());
             pst.setString(6, documento.getDescripcion());
@@ -32,11 +32,11 @@ public class DocumentoDAO {
     }
 
     public void actualizar(Documento documento) throws SQLException {
-        String sql = "UPDATE Documento SET Caja_idCaja = ?, Cajero_idCajero = ?, EmpresaReceptora_idEmpresaReceptora = ?, Movimiento_idMotivo = ?, tipoDocumento = ?, descripcion = ?, monto = ? WHERE idDocumento = ?";
+        String sql = "UPDATE Documento SET Caja_idCaja = ?, Cajero_idCajero = ?, EmpresaReceptora_RUC = ?, Movimiento_idMotivo = ?, tipoDocumento = ?, descripcion = ?, monto = ? WHERE idDocumento = ?";
         try (PreparedStatement pst = this.conexion.prepareStatement(sql)) {
             pst.setInt(1, documento.getIdCaja());
             pst.setInt(2, documento.getIdCajero());
-            pst.setInt(3, documento.getIdEmpresa());
+            pst.setString(3, documento.getIdEmpresa());
             pst.setInt(4, documento.getIdMotivo());
             pst.setString(5, documento.getTipoDocumento());
             pst.setString(6, documento.getDescripcion());
@@ -61,7 +61,8 @@ public class DocumentoDAO {
 
             List<Documento> documentos = new ArrayList<>();
             while (rs.next()) {
-                Documento documento = new Documento(rs.getInt("Caja_idCaja"), rs.getInt("Cajero_idCajero"), rs.getInt("EmpresaReceptora_idEmpresaReceptora"), rs.getInt("Movimiento_idMotivo"), rs.getString("tipoDocumento"), rs.getString("descripcion"), rs.getFloat("monto"));
+                Documento documento = new Documento(rs.getInt("Caja_idCaja"), rs.getInt("Cajero_idCajero"), rs.getString("EmpresaReceptora_RUC"), rs.getInt("Movimiento_idMotivo"), rs.getString("tipoDocumento"), rs.getString("descripcion"), rs.getFloat("monto"));
+                documento.setIdDocumento(rs.getInt("idDocumento"));
                 documentos.add(documento);
             }
             return documentos;
@@ -74,7 +75,7 @@ public class DocumentoDAO {
             pst.setInt(1, idCaja);
             try (ResultSet rs = pst.executeQuery()) {
                 if (rs.next()) {
-                    return new Documento(rs.getInt("Caja_idCaja"), rs.getInt("Cajero_idCajero"), rs.getInt("EmpresaReceptora_idEmpresaReceptora"), rs.getInt("Movimiento_idMotivo"), rs.getString("tipoDocumento"), rs.getString("descripcion"), rs.getFloat("monto"));
+                    return new Documento(rs.getInt("Caja_idCaja"), rs.getInt("Cajero_idCajero"), rs.getString("EmpresaReceptora_RUC"), rs.getInt("Movimiento_idMotivo"), rs.getString("tipoDocumento"), rs.getString("descripcion"), rs.getFloat("monto"));
                 }
                 return null;
             }

@@ -4,13 +4,13 @@ public class Documento {
     int idDocumento;
     int idCaja;
     int idCajero;
-    int idEmpresa;
+    String idEmpresa;
     int idMotivo;
     String tipoDocumento;
     String descripcion;
     float monto;
     
-    public Documento(int idCaja, int idCajero, int idEmpresa, int idMotivo, String tipoDocumento, String descripcion,
+    public Documento(int idCaja, int idCajero, String idEmpresa, int idMotivo, String tipoDocumento, String descripcion,
             float monto) {
         this.idCaja = idCaja;
         this.idCajero = idCajero;
@@ -45,11 +45,11 @@ public class Documento {
         this.idCajero = idCajero;
     }
 
-    public int getIdEmpresa() {
+    public String getIdEmpresa() {
         return idEmpresa;
     }
 
-    public void setIdEmpresa(int idEmpresa) {
+    public void setIdEmpresa(String idEmpresa) {
         this.idEmpresa = idEmpresa;
     }
 

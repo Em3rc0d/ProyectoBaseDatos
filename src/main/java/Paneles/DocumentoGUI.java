@@ -33,36 +33,63 @@ public class DocumentoGUI extends JFrame {
     private void initComponents() {
         setTitle("Gestión de Documentos");
 
-        JPanel panelForm = new JPanel(new GridLayout(8, 2));
+        JPanel panelForm = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        panelForm.add(new JLabel("ID Caja:"));
-        txtIdCaja = new JTextField();
-        panelForm.add(txtIdCaja);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        panelForm.add(new JLabel("ID Caja:"), gbc);
+        txtIdCaja = new JTextField(15);
+        gbc.gridx = 1;
+        panelForm.add(txtIdCaja, gbc);
 
-        panelForm.add(new JLabel("ID Cajero:"));
-        txtIdCajero = new JTextField();
-        panelForm.add(txtIdCajero);
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        panelForm.add(new JLabel("ID Cajero:"), gbc);
+        txtIdCajero = new JTextField(15);
+        gbc.gridx = 1;
+        panelForm.add(txtIdCajero, gbc);
 
-        panelForm.add(new JLabel("ID Empresa:"));
-        txtIdEmpresa = new JTextField();
-        panelForm.add(txtIdEmpresa);
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        panelForm.add(new JLabel("ID Empresa:"), gbc);
+        txtIdEmpresa = new JTextField(15);
+        gbc.gridx = 1;
+        panelForm.add(txtIdEmpresa, gbc);
 
-        panelForm.add(new JLabel("ID Motivo:"));
-        txtIdMotivo = new JTextField();
-        panelForm.add(txtIdMotivo);
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        panelForm.add(new JLabel("ID Motivo:"), gbc);
+        txtIdMotivo = new JTextField(15);
+        gbc.gridx = 1;
+        panelForm.add(txtIdMotivo, gbc);
 
-        panelForm.add(new JLabel("Tipo Documento:"));
-        txtTipoDocumento = new JTextField();
-        panelForm.add(txtTipoDocumento);
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        panelForm.add(new JLabel("Tipo Documento:"), gbc);
+        txtTipoDocumento = new JTextField(15);
+        gbc.gridx = 1;
+        panelForm.add(txtTipoDocumento, gbc);
 
-        panelForm.add(new JLabel("Descripción:"));
-        txtDescripcion = new JTextField();
-        panelForm.add(txtDescripcion);
+        gbc.gridx = 0;
+        gbc.gridy = 5;
+        panelForm.add(new JLabel("Descripción:"), gbc);
+        txtDescripcion = new JTextField(15);
+        gbc.gridx = 1;
+        panelForm.add(txtDescripcion, gbc);
 
-        panelForm.add(new JLabel("Monto:"));
-        txtMonto = new JTextField();
-        panelForm.add(txtMonto);
+        gbc.gridx = 0;
+        gbc.gridy = 6;
+        panelForm.add(new JLabel("Monto:"), gbc);
+        txtMonto = new JTextField(15);
+        gbc.gridx = 1;
+        panelForm.add(txtMonto, gbc);
 
+        gbc.gridx = 0;
+        gbc.gridy = 7;
+        gbc.gridwidth = 2;
         JButton btnInsertar = new JButton("Insertar");
         btnInsertar.addActionListener(new ActionListener() {
             @Override
@@ -70,8 +97,9 @@ public class DocumentoGUI extends JFrame {
                 insertarDocumento();
             }
         });
-        panelForm.add(btnInsertar);
+        panelForm.add(btnInsertar, gbc);
 
+        gbc.gridy = 8;
         JButton btnActualizar = new JButton("Actualizar");
         btnActualizar.addActionListener(new ActionListener() {
             @Override
@@ -79,8 +107,9 @@ public class DocumentoGUI extends JFrame {
                 actualizarDocumento();
             }
         });
-        panelForm.add(btnActualizar);
+        panelForm.add(btnActualizar, gbc);
 
+        gbc.gridy = 9;
         JButton btnEliminar = new JButton("Eliminar");
         btnEliminar.addActionListener(new ActionListener() {
             @Override
@@ -88,7 +117,7 @@ public class DocumentoGUI extends JFrame {
                 eliminarDocumento();
             }
         });
-        panelForm.add(btnEliminar);
+        panelForm.add(btnEliminar, gbc);
 
         model = new DefaultTableModel();
         model.addColumn("ID Documento");
@@ -103,7 +132,7 @@ public class DocumentoGUI extends JFrame {
         tableDocumentos = new JTable(model);
         add(new JScrollPane(tableDocumentos), BorderLayout.CENTER);
 
-        JPanel panelSouth = new JPanel(new GridLayout(2, 1));
+        JPanel panelSouth = new JPanel(new GridLayout(1, 2));
 
         JButton btnActualizarTabla = new JButton("Actualizar Tabla");
         btnActualizarTabla.addActionListener(new ActionListener() {
@@ -152,13 +181,13 @@ public class DocumentoGUI extends JFrame {
         try {
             int idCaja = Integer.parseInt(txtIdCaja.getText());
             int idCajero = Integer.parseInt(txtIdCajero.getText());
-            int idEmpresa = Integer.parseInt(txtIdEmpresa.getText());
+            String RUC = txtIdEmpresa.getText();
             int idMotivo = Integer.parseInt(txtIdMotivo.getText());
             String tipoDocumento = txtTipoDocumento.getText();
             String descripcion = txtDescripcion.getText();
             float monto = Float.parseFloat(txtMonto.getText());
 
-            Documento documento = new Documento(idCaja, idCajero, idEmpresa, idMotivo, tipoDocumento, descripcion, monto);
+            Documento documento = new Documento(idCaja, idCajero, RUC, idMotivo, tipoDocumento, descripcion, monto);
             documentoDAO.insertar(documento);
             JOptionPane.showMessageDialog(this, "Documento insertado correctamente.");
             loadData();
@@ -172,13 +201,13 @@ public class DocumentoGUI extends JFrame {
         try {
             int idCaja = Integer.parseInt(txtIdCaja.getText());
             int idCajero = Integer.parseInt(txtIdCajero.getText());
-            int idEmpresa = Integer.parseInt(txtIdEmpresa.getText());
+            String RUC = txtIdEmpresa.getText();
             int idMotivo = Integer.parseInt(txtIdMotivo.getText());
             String tipoDocumento = txtTipoDocumento.getText();
             String descripcion = txtDescripcion.getText();
             float monto = Float.parseFloat(txtMonto.getText());
 
-            Documento documento = new Documento(idCaja, idCajero, idEmpresa, idMotivo, tipoDocumento, descripcion, monto);
+            Documento documento = new Documento(idCaja, idCajero, RUC, idMotivo, tipoDocumento, descripcion, monto);
             documentoDAO.actualizar(documento);
             JOptionPane.showMessageDialog(this, "Documento actualizado correctamente.");
             loadData();
