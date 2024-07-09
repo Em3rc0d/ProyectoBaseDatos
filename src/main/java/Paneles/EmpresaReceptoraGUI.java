@@ -129,12 +129,10 @@ public class EmpresaReceptoraGUI extends JFrame {
     }
 
     private void actualizarEmpresaReceptora() {
-        int idEmpresaReceptora = Integer.parseInt(txtIdEmpresaReceptora.getText());
         String RUC = txtRUC.getText();
         String nombre = txtNombre.getText();
         String tipo = txtTipo.getText();
         EmpresaReceptora empresaReceptora = new EmpresaReceptora(RUC, nombre, tipo);
-        empresaReceptora.setIdEmpresaReceptora(idEmpresaReceptora);
         empresaReceptoraDAO.actualizar(empresaReceptora);
         JOptionPane.showMessageDialog(this, "Empresa Receptora actualizada correctamente.");
         loadData();
@@ -143,7 +141,6 @@ public class EmpresaReceptoraGUI extends JFrame {
     private void eliminarEmpresaReceptora() {
         int idEmpresaReceptora = Integer.parseInt(txtIdEmpresaReceptora.getText());
         EmpresaReceptora empresaReceptora = new EmpresaReceptora("", "", "");
-        empresaReceptora.setIdEmpresaReceptora(idEmpresaReceptora);
         empresaReceptoraDAO.eliminar(empresaReceptora);
         JOptionPane.showMessageDialog(this, "Empresa Receptora eliminada correctamente.");
         loadData();

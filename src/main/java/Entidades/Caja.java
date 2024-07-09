@@ -2,18 +2,18 @@ package Entidades;
 
 public class Caja {
     int idCaja;
-    int idArea;
+    int Area_idArea;
     double monto;
     double topeMovimiento;
     
-    public Caja(int idCaja, int idArea, double monto, double topeMovimiento) {
+    public Caja(int idCaja, int Area_idArea, double monto, double topeMovimiento) {
         this.idCaja = idCaja;
-        this.idArea = idArea;
+        this.Area_idArea = Area_idArea;
         this.monto = monto;
         this.topeMovimiento = topeMovimiento;
     }
-    public Caja(int idArea, double monto, double topeMovimiento) {
-        this.idArea = idArea;
+    public Caja(int Area_idArea, double monto, double topeMovimiento) {
+        this.Area_idArea = Area_idArea;
         this.monto = monto;
         this.topeMovimiento = topeMovimiento;
     }
@@ -26,12 +26,12 @@ public class Caja {
         this.idCaja = idCaja;
     }
 
-    public int getIdArea() {
-        return idArea;
+    public int getArea_idArea() {
+        return Area_idArea;
     }
 
-    public void setIdArea(int idArea) {
-        this.idArea = idArea;
+    public void setArea_idArea(int Area_idArea) {
+        this.Area_idArea = Area_idArea;
     }
 
     public double getMonto() {

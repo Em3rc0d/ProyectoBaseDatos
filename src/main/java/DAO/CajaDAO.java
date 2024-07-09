@@ -19,7 +19,7 @@ public class CajaDAO {
     public void insertar(Caja caja) throws SQLException {
         String sql = "INSERT INTO Caja (idArea, monto, topeMovimiento) VALUES (?, ?, ?)";
         try (PreparedStatement pst = this.conexion.prepareStatement(sql)) {
-            pst.setInt(1, caja.getIdArea());
+            pst.setInt(1, caja.getArea_idArea());
             pst.setDouble(2, caja.getMonto());
             pst.setDouble(3, caja.getTopeMovimiento());
             pst.executeUpdate();
@@ -29,7 +29,7 @@ public class CajaDAO {
     public void actualizar(Caja caja) throws SQLException {
         String sql = "UPDATE Caja SET idArea = ?, monto = ?, topeMovimiento = ? WHERE idCaja = ?";
         try (PreparedStatement pst = this.conexion.prepareStatement(sql)) {
-            pst.setInt(1, caja.getIdArea());
+            pst.setInt(1, caja.getArea_idArea());
             pst.setDouble(2, caja.getMonto());
             pst.setDouble(3, caja.getTopeMovimiento());
             pst.setInt(4, caja.getIdCaja());

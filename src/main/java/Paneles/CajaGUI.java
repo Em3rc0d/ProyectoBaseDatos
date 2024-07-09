@@ -121,7 +121,7 @@ public class CajaGUI extends JFrame {
             for (Caja caja : cajas) {
                 model.addRow(new Object[]{
                     caja.getIdCaja(),
-                    caja.getIdArea(),
+                    caja.getArea_idArea(),
                     caja.getMonto(),
                     caja.getTopeMovimiento()
                 });

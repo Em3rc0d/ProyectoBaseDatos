@@ -2,7 +2,6 @@ package Entidades;
 
 public class EmpresaReceptora {
 
-    private int idEmpresaReceptora;
     private String RUC;
     private String nombre;
     private String tipo;
@@ -11,14 +10,6 @@ public class EmpresaReceptora {
         this.RUC = RUC;
         this.nombre = nombre;   
         this.tipo = tipo;
-    }
-
-    public int getIdEmpresaReceptora() {
-        return idEmpresaReceptora;
-    }
-
-    public void setIdEmpresaReceptora(int idEmpresaReceptora) {
-        this.idEmpresaReceptora = idEmpresaReceptora;
     }
 
     public String getRUC() {
