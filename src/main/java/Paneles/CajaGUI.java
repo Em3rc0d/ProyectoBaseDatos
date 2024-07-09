@@ -133,12 +133,11 @@ public class CajaGUI extends JFrame {
 
     private void insertarCaja() {
         try {
-            int idCaja = Integer.parseInt(txtIdCaja.getText());
             int idArea = Integer.parseInt(txtIdArea.getText());
             double monto = Double.parseDouble(txtMonto.getText());
             double topeMovimiento = Double.parseDouble(txtTopeMovimiento.getText());
 
-            Caja caja = new Caja(idCaja, idArea, monto, topeMovimiento);
+            Caja caja = new Caja(idArea, monto, topeMovimiento);
             cajaDAO.insertar(caja);
             JOptionPane.showMessageDialog(this, "Caja insertada correctamente.");
             loadData();
