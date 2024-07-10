@@ -1,6 +1,8 @@
 package DAO;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 
 import Entidades.EmpresaReceptora;
@@ -39,16 +41,27 @@ public class EmpresaReceptoraDAO {
         }
     }
     
-    public void eliminar(EmpresaReceptora empresaReceptora) {
-        try{
-            String sql = "DELETE FROM EmpresaReceptora WHERE RUC = ?";
-            java.sql.PreparedStatement pst = this.conexion.prepareStatement(sql);
-            pst.setString(1, empresaReceptora.getRUC());
+    // public void eliminar(EmpresaReceptora empresaReceptora) {
+    //     try{
+    //         String sql = "DELETE FROM EmpresaReceptora WHERE RUC = ?";
+    //         java.sql.PreparedStatement pst = this.conexion.prepareStatement(sql);
+    //         pst.setString(1, empresaReceptora.getRUC());
+    //         pst.executeUpdate();
+    //     } catch (Exception e) { 
+    //         e.printStackTrace();
+    //     }
+    // }
+
+    public void eliminar(String RUC) {
+        String sql = "EXEC spEliminarEmpresaReceptora @RUC = ?";
+        try (PreparedStatement pst = this.conexion.prepareStatement(sql)) {
+            pst.setString(1, RUC);
             pst.executeUpdate();
-        } catch (Exception e) { 
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
 
     public EmpresaReceptora obtener(String RUC) {
         EmpresaReceptora empresaReceptora = null;
@@ -81,5 +94,44 @@ public class EmpresaReceptoraDAO {
         }
         return empresasReceptoras;
     }
-
 }
+
+// --Procedimiento eliminar Empresa Receptora
+// CREATE PROCEDURE spEliminarEmpresaReceptora
+//     @RUC VARCHAR(45)
+// AS
+// BEGIN
+//     -- Iniciar una transacción
+//     BEGIN TRANSACTION;
+
+//     -- Manejo de errores
+//     BEGIN TRY
+//         -- Eliminar las transacciones relacionadas en la tabla Transaccion
+//         DELETE FROM Transaccion
+//         WHERE Documento_idDocumento IN (
+//             SELECT idDocumento
+//             FROM Documento
+//             WHERE EmpresaReceptora_RUC = @RUC
+//         );
+
+//         -- Eliminar los documentos relacionados en la tabla Documento
+//         DELETE FROM Documento
+//         WHERE EmpresaReceptora_RUC = @RUC;
+
+//         -- Eliminar el objeto de la tabla EmpresaReceptora
+//         DELETE FROM EmpresaReceptora
+//         WHERE RUC = @RUC;
+
+//         -- Confirmar la transacción
+//         COMMIT TRANSACTION;
+//     END TRY
+//     BEGIN CATCH
+//         -- En caso de error, deshacer la transacción
+//         ROLLBACK TRANSACTION;
+//         -- Mostrar el mensaje de error
+//         THROW;
+//     END CATCH
+// END;
+// GO
+
+// EXEC spEliminarEmpresaReceptora @RUC = 90123456789;
