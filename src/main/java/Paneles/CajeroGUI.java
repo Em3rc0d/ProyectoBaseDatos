@@ -27,7 +27,7 @@ public class CajeroGUI extends JFrame {
         initComponents();
         loadData();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(800, 600); // Ajusta el tamaño de la ventana según sea necesario
+        setSize(1200, 800);// Ajusta el tamaño de la ventana según sea necesario
         setVisible(true);
         setLocationRelativeTo(null);
     }

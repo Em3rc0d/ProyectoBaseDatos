@@ -64,7 +64,7 @@ public class ConsultasGUI extends JFrame {
             }
         });
         panelConsultas.add(btnRetornar);
-
+        setSize(1200, 800);
         pack();
         setLocationRelativeTo(null);
         setVisible(true);

@@ -33,7 +33,7 @@ public class CajaGUI extends JFrame {
         initComponents();
         loadData();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(600, 400);
+        setSize(1200, 800);
         setVisible(true);
         setLocationRelativeTo(null);
     }

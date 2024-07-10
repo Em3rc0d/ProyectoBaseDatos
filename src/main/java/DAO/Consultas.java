@@ -1,10 +1,5 @@
 package DAO;
 
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-
 public class Consultas {
 
     // Consulta 1: Total de Montos Movidos por Cajero en una Fecha Específica
@@ -63,12 +58,11 @@ public class Consultas {
     // Consulta 5: Documentos por Tipo y Monto Mayor a $1000
     public static String documentosPorTipoYMontoMayorA() {
         String consulta = "SELECT \n" + 
-                          "    Documento.tipoDocumento,\n" + 
                           "    Documento.descripcion,\n" + 
                           "    Documento.monto\n" + 
                           "FROM Documento\n" + 
                           "WHERE Documento.monto > 1000\n" + 
-                          "ORDER BY Documento.tipoDocumento, Documento.monto DESC;";
+                          "ORDER BY Documento.monto DESC;";
         return consulta;
     }
 

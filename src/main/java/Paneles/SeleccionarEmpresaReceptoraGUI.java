@@ -24,7 +24,7 @@ public class SeleccionarEmpresaReceptoraGUI extends JFrame {
         initComponents();
         loadData();
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setSize(600, 400);
+        setSize(1200, 800);
         setVisible(true);
         setLocationRelativeTo(null);
     }
