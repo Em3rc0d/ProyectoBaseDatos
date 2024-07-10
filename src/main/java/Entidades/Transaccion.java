@@ -19,6 +19,15 @@ public class Transaccion {
         this.descripcion = descripcion;
     }
 
+    public Transaccion(int idTransaccion, int documento_idDocumento, int estado_idEstado, Date fechaTransaccion, String tipoTransaccion, String descripcion) {
+        this.idTransaccion = idTransaccion;
+        this.Documento_idDocumento = documento_idDocumento;
+        this.Estado_idEstado = estado_idEstado;
+        this.fechaTransaccion = fechaTransaccion;
+        this.tipoTransaccion = tipoTransaccion;
+        this.descripcion = descripcion;
+    }
+
     public Transaccion(int idTransaccion){
         this.idTransaccion = idTransaccion;
     }

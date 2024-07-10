@@ -270,7 +270,7 @@ public class TransaccionGUI extends JFrame {
             String tipoTransaccion = txtTipoTransaccion.getText();
             String descripcion = txtDescripcion.getText();
 
-            Transaccion transaccion = new Transaccion(idDocumento, idEstado, fechaTransaccion, tipoTransaccion, descripcion);
+            Transaccion transaccion = new Transaccion(idTransaccion,idDocumento, idEstado, fechaTransaccion, tipoTransaccion, descripcion);
             transaccionDAO.actualizar(transaccion);
             JOptionPane.showMessageDialog(this, "Transacción actualizada correctamente.");
             loadData();
