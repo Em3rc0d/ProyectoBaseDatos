@@ -16,7 +16,7 @@ import java.util.List;
 public class DocumentoGUI extends JFrame {
 
     private DocumentoDAO documentoDAO;
-    private JTextField txtIdDocumento, txtIdCaja, txtIdCajero, txtIdEmpresa, txtIdMotivo, txtTipoDocumento, txtDescripcion, txtMonto;
+    private JTextField txtIdDocumento, txtIdCaja, txtIdCajero, txtIdEmpresa, txtIdMovimiento, txtTipoDocumento, txtDescripcion, txtMonto;
     private JTable tableDocumentos;
     private DefaultTableModel model;
     Connection conn;
@@ -102,10 +102,10 @@ public class DocumentoGUI extends JFrame {
     
         gbc.gridx = 0;
         gbc.gridy = 4;
-        panelForm.add(new JLabel("ID Motivo:"), gbc);
-        txtIdMotivo = new JTextField(15);
+        panelForm.add(new JLabel("ID Movimiento:"), gbc);
+        txtIdMovimiento = new JTextField(15);
         gbc.gridx = 1;
-        panelForm.add(txtIdMotivo, gbc);
+        panelForm.add(txtIdMovimiento, gbc);
 
         JButton btnSeleccionarMotivo = new JButton("Seleccionar");
         btnSeleccionarMotivo.addActionListener(new ActionListener() {
@@ -178,7 +178,7 @@ public class DocumentoGUI extends JFrame {
         model.addColumn("ID Caja");
         model.addColumn("ID Cajero");
         model.addColumn("RUC");
-        model.addColumn("ID Motivo");
+        model.addColumn("ID Movimiento");
         model.addColumn("Tipo Documento");
         model.addColumn("Descripción");
         model.addColumn("Monto");
@@ -214,7 +214,7 @@ public class DocumentoGUI extends JFrame {
                 txtIdCaja.setText(model.getValueAt(selectedRow, 1).toString());
                 txtIdCajero.setText(model.getValueAt(selectedRow, 2).toString());
                 txtIdEmpresa.setText(model.getValueAt(selectedRow, 3).toString());
-                txtIdMotivo.setText(model.getValueAt(selectedRow, 4).toString());
+                txtIdMovimiento.setText(model.getValueAt(selectedRow, 4).toString());
                 txtTipoDocumento.setText(model.getValueAt(selectedRow, 5).toString());
                 txtDescripcion.setText(model.getValueAt(selectedRow, 6).toString());
                 txtMonto.setText(model.getValueAt(selectedRow, 7).toString());
@@ -254,7 +254,7 @@ public class DocumentoGUI extends JFrame {
             int idCaja = Integer.parseInt(txtIdCaja.getText());
             int idCajero = Integer.parseInt(txtIdCajero.getText());
             String RUC = txtIdEmpresa.getText();
-            int idMotivo = Integer.parseInt(txtIdMotivo.getText());
+            int idMotivo = Integer.parseInt(txtIdMovimiento.getText());
             String tipoDocumento = txtTipoDocumento.getText();
             String descripcion = txtDescripcion.getText();
             float monto = Float.parseFloat(txtMonto.getText());
@@ -274,7 +274,7 @@ public class DocumentoGUI extends JFrame {
             int idCaja = Integer.parseInt(txtIdCaja.getText());
             int idCajero = Integer.parseInt(txtIdCajero.getText());
             String RUC = txtIdEmpresa.getText();
-            int idMotivo = Integer.parseInt(txtIdMotivo.getText());
+            int idMotivo = Integer.parseInt(txtIdMovimiento.getText());
             String tipoDocumento = txtTipoDocumento.getText();
             String descripcion = txtDescripcion.getText();
             float monto = Float.parseFloat(txtMonto.getText());
@@ -311,7 +311,7 @@ public class DocumentoGUI extends JFrame {
         txtIdCaja.setText("");
         txtIdCajero.setText("");
         txtIdEmpresa.setText("");
-        txtIdMotivo.setText("");
+        txtIdMovimiento.setText("");
         txtTipoDocumento.setText("");
         txtDescripcion.setText("");
         txtMonto.setText("");
@@ -330,7 +330,7 @@ public class DocumentoGUI extends JFrame {
     }
 
     private void seleccionarMotivo() {
-        new SeleccionarMotivoGUI(conn, txtIdMotivo).setVisible(true);
+        new SeleccionarMovimientoGUI(conn, txtIdMovimiento, txtTipoDocumento).setVisible(true);
     }
     
     public static void main(String[] args) {

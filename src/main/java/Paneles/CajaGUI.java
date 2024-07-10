@@ -2,9 +2,7 @@ package Paneles;
 
 import DAO.CajaDAO;
 import DAO.DocumentoDAO;
-import DAO.TransaccionDAO;
 import Entidades.Caja;
-import Entidades.Documento;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -23,8 +21,6 @@ import java.util.Set;
 public class CajaGUI extends JFrame {
 
     private CajaDAO cajaDAO;
-    private DocumentoDAO documentoDAO;
-    private TransaccionDAO transaccionDAO;
     private JTextField txtIdCaja, txtIdArea, txtMonto, txtTopeMovimiento;
     private JTable tableCajas;
     private DefaultTableModel model;
@@ -33,8 +29,6 @@ public class CajaGUI extends JFrame {
 
     public CajaGUI(Connection conexion) {
         this.cajaDAO = new CajaDAO(conexion);
-        this.documentoDAO = new DocumentoDAO(conexion);
-        this.transaccionDAO = new TransaccionDAO(conexion);
         conn = conexion;
         initComponents();
         loadData();
@@ -261,10 +255,6 @@ public class CajaGUI extends JFrame {
         if (selectedRow != -1) {
             int idCaja = (int) model.getValueAt(selectedRow, 0);
             try {
-                Documento documento = new Documento();
-                documento.setIdCaja(idCaja);
-                transaccionDAO.eliminarTransaccionDeUnDocumento(documento.getIdDocumento());
-                documentoDAO.eliminarDocumentosDeUnaCaja(idCaja);
                 cajaDAO.eliminar(idCaja);
                 loadData();
                 JOptionPane.showMessageDialog(this, "Caja eliminada exitosamente.");
