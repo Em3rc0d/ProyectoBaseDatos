@@ -17,7 +17,8 @@ import java.util.List;
 public class TransaccionGUI extends JFrame {
 
     private TransaccionDAO transaccionDAO;
-    private JTextField txtIdTransaccion, txtIdDocumento, txtIdEstado, txtFechaTransaccion, txtTipoTransaccion, txtDescripcion;
+    private JTextField txtIdTransaccion, txtIdDocumento, txtIdEstado, txtFechaTransaccion, txtDescripcion;
+    private JComboBox<String> cbTipoTransaccion;
     private JTable tableTransacciones;
     private DefaultTableModel model;
     Connection conn;
@@ -36,32 +37,32 @@ public class TransaccionGUI extends JFrame {
 
     private void initComponents() {
         setTitle("Gestión de Transacciones");
-    
+
         JPanel panelForm = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.fill = GridBagConstraints.HORIZONTAL;
-    
+
         // Labels y campos de texto para la entrada de datos
-    
+
         gbc.gridx = 0;
         gbc.gridy = 0;
         panelForm.add(new JLabel("ID Transaccion:"), gbc);
-    
+
         txtIdTransaccion = new JTextField();
         txtIdTransaccion.setEditable(false);
         gbc.gridx = 1;
         panelForm.add(txtIdTransaccion, gbc);
-    
+
         gbc.gridx = 0;
         gbc.gridy = 1;
         panelForm.add(new JLabel("ID Documento:"), gbc);
-    
+
         txtIdDocumento = new JTextField(15);
         gbc.gridx = 1;
         gbc.weightx = 1.0;
         panelForm.add(txtIdDocumento, gbc);
-    
+
         JButton btnSeleccionarDocumento = new JButton("Seleccionar");
         btnSeleccionarDocumento.addActionListener(new ActionListener() {
             @Override
@@ -72,11 +73,11 @@ public class TransaccionGUI extends JFrame {
         gbc.gridx = 2;
         gbc.weightx = 1.0;
         panelForm.add(btnSeleccionarDocumento, gbc);
-    
+
         gbc.gridx = 0;
         gbc.gridy = 2;
         panelForm.add(new JLabel("ID Estado:"), gbc);
-    
+
         txtIdEstado = new JTextField(15);
         gbc.gridx = 1;
         gbc.weightx = 1.0;
@@ -89,7 +90,6 @@ public class TransaccionGUI extends JFrame {
                 try {
                     seleccionarEstado();
                 } catch (SQLException e1) {
-                    // TODO Auto-generated catch block
                     e1.printStackTrace();
                 }
             }
@@ -97,34 +97,34 @@ public class TransaccionGUI extends JFrame {
         gbc.gridx = 2;
         gbc.weightx = 1.0;
         panelForm.add(btnSeleccionarEstado, gbc);
-    
+
         gbc.gridx = 0;
         gbc.gridy = 3;
         panelForm.add(new JLabel("Fecha Transacción (YYYY-MM-DD):"), gbc);
-    
+
         txtFechaTransaccion = new JTextField(15);
         gbc.gridx = 1;
         gbc.weightx = 1.0;
         panelForm.add(txtFechaTransaccion, gbc);
-    
+
         gbc.gridx = 0;
         gbc.gridy = 4;
         panelForm.add(new JLabel("Tipo Transacción:"), gbc);
-    
-        txtTipoTransaccion = new JTextField(15);
+
+        cbTipoTransaccion = new JComboBox<>(new String[]{"Deposito", "Retiro", "Pago", "Compra", "Venta"});
         gbc.gridx = 1;
         gbc.weightx = 1.0;
-        panelForm.add(txtTipoTransaccion, gbc);
-    
+        panelForm.add(cbTipoTransaccion, gbc);
+
         gbc.gridx = 0;
         gbc.gridy = 5;
         panelForm.add(new JLabel("Descripción:"), gbc);
-    
+
         txtDescripcion = new JTextField(15);
         gbc.gridx = 1;
         gbc.weightx = 1.0;
         panelForm.add(txtDescripcion, gbc);
-    
+
         // Botones para insertar, actualizar y eliminar
         gbc.gridx = 0;
         gbc.gridy = 6;
@@ -139,7 +139,7 @@ public class TransaccionGUI extends JFrame {
             }
         });
         panelForm.add(btnInsertar, gbc);
-    
+
         gbc.gridx = 1;
         gbc.weightx = 1.0;
         JButton btnActualizar = new JButton("Actualizar");
@@ -151,7 +151,7 @@ public class TransaccionGUI extends JFrame {
             }
         });
         panelForm.add(btnActualizar, gbc);
-    
+
         gbc.gridx = 2;
         gbc.weightx = 0.0;
         JButton btnEliminar = new JButton("Eliminar");
@@ -163,7 +163,7 @@ public class TransaccionGUI extends JFrame {
             }
         });
         panelForm.add(btnEliminar, gbc);
-    
+
         // Configuración de la tabla de transacciones
         gbc.gridx = 0;
         gbc.gridy = 7;
@@ -171,7 +171,7 @@ public class TransaccionGUI extends JFrame {
         gbc.weightx = 1.0;
         gbc.weighty = 1.0;
         gbc.fill = GridBagConstraints.BOTH;
-    
+
         model = new DefaultTableModel();
         model.addColumn("ID Transacción");
         model.addColumn("ID Documento");
@@ -179,13 +179,13 @@ public class TransaccionGUI extends JFrame {
         model.addColumn("Fecha Transacción");
         model.addColumn("Tipo Transacción");
         model.addColumn("Descripción");
-    
+
         tableTransacciones = new JTable(model);
         panelForm.add(new JScrollPane(tableTransacciones), gbc);
-    
+
         // Panel inferior con botones de acción y retorno
         JPanel panelSouth = new JPanel(new GridLayout(2, 1));
-    
+
         JButton btnActualizarTabla = new JButton("Actualizar Tabla");
         btnActualizarTabla.addActionListener(new ActionListener() {
             @Override
@@ -194,7 +194,7 @@ public class TransaccionGUI extends JFrame {
             }
         });
         panelSouth.add(btnActualizarTabla);
-    
+
         JButton btnRetornar = new JButton("Retornar");
         btnRetornar.addActionListener(new ActionListener() {
             @Override
@@ -203,7 +203,7 @@ public class TransaccionGUI extends JFrame {
             }
         });
         panelSouth.add(btnRetornar);
-    
+
         tableTransacciones.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -212,16 +212,16 @@ public class TransaccionGUI extends JFrame {
                 txtIdDocumento.setText(model.getValueAt(selectedRow, 1).toString());
                 txtIdEstado.setText(model.getValueAt(selectedRow, 2).toString());
                 txtFechaTransaccion.setText(model.getValueAt(selectedRow, 3).toString());
-                txtTipoTransaccion.setText(model.getValueAt(selectedRow, 4).toString());
+                cbTipoTransaccion.setSelectedItem(model.getValueAt(selectedRow, 4).toString());
                 txtDescripcion.setText(model.getValueAt(selectedRow, 5).toString());
                 selectedIdTransaccion = Integer.parseInt(model.getValueAt(selectedRow, 0).toString());
             }
         });
-    
+
         // Agregar paneles al JFrame principal
         add(panelForm, BorderLayout.CENTER);
         add(panelSouth, BorderLayout.SOUTH);
-    
+
         // Configuraciones finales del JFrame
         setSize(800, 600); // Ajusta el tamaño según tus necesidades
         setLocationRelativeTo(null); // Centra la ventana en la pantalla
@@ -248,7 +248,7 @@ public class TransaccionGUI extends JFrame {
             int idDocumento = Integer.parseInt(txtIdDocumento.getText());
             int idEstado = Integer.parseInt(txtIdEstado.getText());
             Date fechaTransaccion = Date.valueOf(txtFechaTransaccion.getText());
-            String tipoTransaccion = txtTipoTransaccion.getText();
+            String tipoTransaccion = cbTipoTransaccion.getSelectedItem().toString();
             String descripcion = txtDescripcion.getText();
 
             Transaccion transaccion = new Transaccion(idDocumento, idEstado, fechaTransaccion, tipoTransaccion, descripcion);
@@ -267,10 +267,10 @@ public class TransaccionGUI extends JFrame {
             int idDocumento = Integer.parseInt(txtIdDocumento.getText());
             int idEstado = Integer.parseInt(txtIdEstado.getText());
             Date fechaTransaccion = Date.valueOf(txtFechaTransaccion.getText());
-            String tipoTransaccion = txtTipoTransaccion.getText();
+            String tipoTransaccion = cbTipoTransaccion.getSelectedItem().toString();
             String descripcion = txtDescripcion.getText();
 
-            Transaccion transaccion = new Transaccion(idTransaccion,idDocumento, idEstado, fechaTransaccion, tipoTransaccion, descripcion);
+            Transaccion transaccion = new Transaccion(idTransaccion, idDocumento, idEstado, fechaTransaccion, tipoTransaccion, descripcion);
             transaccionDAO.actualizar(transaccion);
             JOptionPane.showMessageDialog(this, "Transacción actualizada correctamente.");
             loadData();
@@ -303,7 +303,7 @@ public class TransaccionGUI extends JFrame {
         txtIdDocumento.setText("");
         txtIdEstado.setText("");
         txtFechaTransaccion.setText("");
-        txtTipoTransaccion.setText("");
+        cbTipoTransaccion.setSelectedIndex(0);
         txtDescripcion.setText("");
     }
 

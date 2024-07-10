@@ -51,14 +51,13 @@ CREATE TABLE Documento (
     Caja_idCaja INT NOT NULL,
     Cajero_idCajero INT NOT NULL,
     EmpresaReceptora_RUC VARCHAR(45) NOT NULL,
-    Movimiento_idMotivo INT NOT NULL,
-    tipoDocumento VARCHAR(45) NOT NULL,
+    Movimiento_idMovimiento INT NOT NULL,
     descripcion VARCHAR(45) NOT NULL,
     monto FLOAT NOT NULL,
     CONSTRAINT FK_Documento_Caja FOREIGN KEY (Caja_idCaja) REFERENCES Caja(idCaja),
     CONSTRAINT FK_Documento_Cajero FOREIGN KEY (Cajero_idCajero) REFERENCES Cajero(idCajero),
     CONSTRAINT FK_Documento_EmpresaReceptora FOREIGN KEY (EmpresaReceptora_RUC) REFERENCES EmpresaReceptora(RUC),
-    CONSTRAINT FK_Documento_Movimiento FOREIGN KEY (Movimiento_idMotivo) REFERENCES Movimiento(idMovimiento)
+    CONSTRAINT FK_Documento_Movimiento FOREIGN KEY (Movimiento_idMovimiento) REFERENCES Movimiento(idMovimiento)
 );
 
 CREATE TABLE Transaccion (
@@ -163,41 +162,38 @@ VALUES
     ('En evaluación'),
     ('Completado');
 
-INSERT INTO Movimiento (tipoMovimiento)
-VALUES
-    ('Depósito'),
-    ('Retiro'),
-    ('Transferencia'),
-    ('Pago'),
-    ('Compra'),
-    ('Venta'),
-    ('Devolución'),
-    ('Ajuste'),
-    ('Reversión'),
-    ('Reembolso'),
-    ('Crédito'),
-    ('Débito'),
-    ('Inversión'),
-    ('Dividendo'),
-    ('Gasto');
+INSERT INTO Movimiento (tipoMovimiento) 
+VALUES 
+('boleta'),
+('factura'),
+('recibo'),
+('nota de crédito'),
+('cheque'),
+('transferencia'),
+('depósito'),
+('retiro'),
+('abono'),
+('cargo'),
+('comprobante'),
+('voucher');
 
-INSERT INTO Documento (Caja_idCaja, Cajero_idCajero, EmpresaReceptora_RUC, Movimiento_idMotivo, tipoDocumento, descripcion, monto)
+INSERT INTO Documento (Caja_idCaja, Cajero_idCajero, EmpresaReceptora_RUC, Movimiento_idMovimiento,  descripcion, monto)
 VALUES
-    (1, 1, '12345678901', 1, 'Factura', 'Pago por servicios', 1500.00),
-    (2, 2, '23456789012', 2, 'Recibo', 'Compra de materiales', 2000.00),
-    (3, 3, '34567890123', 3, 'Nota de crédito', 'Devolución de productos', 500.00),
-    (4, 4, '45678901234', 4, 'Orden de compra', 'Compra de equipos', 3000.00),
-    (5, 5, '56789012345', 5, 'Transferencia', 'Transferencia de fondos', 2500.00),
-    (6, 6, '67890123456', 6, 'Factura', 'Pago de servicios', 3500.00),
-    (7, 7, '78901234567', 7, 'Recibo', 'Compra de suministros', 4500.00),
-    (8, 8, '89012345678', 8, 'Nota de débito', 'Devolución de fondos', 5500.00),
-    (9, 9, '90123456789', 9, 'Orden de pago', 'Pago de deuda', 6500.00),
-    (10, 10, '01234567890', 10, 'Transferencia', 'Transferencia interbancaria', 7500.00),
-    (11, 11, '11223344556', 11, 'Factura', 'Pago por servicios', 1500.00),
-    (12, 12, '22334455667', 12, 'Recibo', 'Compra de materiales', 2000.00),
-    (13, 13, '33445566778', 13, 'Nota de crédito', 'Devolución de productos', 500.00),
-    (14, 14, '44556677889', 14, 'Orden de compra', 'Compra de equipos', 3000.00),
-    (15, 15, '55667788990', 15, 'Transferencia', 'Transferencia de fondos', 2500.00);
+    (1, 1, '12345678901', 1, 'Pago por servicios', 1500.00),
+    (2, 2, '23456789012', 2, 'Compra de materiales', 2000.00),
+    (3, 3, '34567890123', 3,'Devolución de productos', 500.00),
+    (4, 4, '45678901234', 4, 'Compra de equipos', 3000.00),
+    (5, 5, '56789012345', 5, 'Transferencia de fondos', 2500.00),
+    (6, 6, '67890123456', 6, 'Pago de servicios', 3500.00),
+    (7, 7, '78901234567', 7, 'Compra de suministros', 4500.00),
+    (8, 8, '89012345678', 8, 'Devolución de fondos', 5500.00),
+    (9, 9, '90123456789', 9, 'Pago de deuda', 6500.00),
+    (10, 10, '01234567890', 10, 'Transferencia interbancaria', 7500.00),
+    (11, 11, '11223344556', 11, 'Pago por servicios', 1500.00),
+    (12, 12, '22334455667', 12, 'Compra de materiales', 2000.00),
+    (13, 13, '33445566778', 10, 'Devolución de productos', 500.00),
+    (14, 14, '44556677889', 5, 'Compra de equipos', 3000.00),
+    (15, 15, '55667788990', 7, 'Transferencia de fondos', 2500.00);
 
 INSERT INTO Transaccion (Documento_idDocumento, Estado_idEstado, fechaTransaccion, tipoTransaccion, descripcion)
 VALUES
@@ -326,3 +322,5 @@ GO
 
 --Ejemplo de uso
 EXEC spEliminarEmpresaReceptora @RUC = 90123456789;
+
+Select * from Movimiento
