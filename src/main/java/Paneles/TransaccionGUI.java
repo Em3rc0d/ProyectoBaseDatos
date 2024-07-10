@@ -1,7 +1,9 @@
 package Paneles;
 
 import Conexion.ConexionBD;
+import DAO.DocumentoDAO;
 import DAO.TransaccionDAO;
+import Entidades.Documento;
 import Entidades.Transaccion;
 
 import javax.swing.*;
@@ -11,6 +13,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -178,6 +182,7 @@ public class TransaccionGUI extends JFrame {
         model.addColumn("ID Estado");
         model.addColumn("Fecha Transacción");
         model.addColumn("Tipo Transacción");
+        model.addColumn("Monto");
         model.addColumn("Descripción");
 
         tableTransacciones = new JTable(model);
@@ -213,7 +218,7 @@ public class TransaccionGUI extends JFrame {
                 txtIdEstado.setText(model.getValueAt(selectedRow, 2).toString());
                 txtFechaTransaccion.setText(model.getValueAt(selectedRow, 3).toString());
                 cbTipoTransaccion.setSelectedItem(model.getValueAt(selectedRow, 4).toString());
-                txtDescripcion.setText(model.getValueAt(selectedRow, 5).toString());
+                txtDescripcion.setText(model.getValueAt(selectedRow, 6).toString());
                 selectedIdTransaccion = Integer.parseInt(model.getValueAt(selectedRow, 0).toString());
             }
         });
@@ -238,6 +243,7 @@ public class TransaccionGUI extends JFrame {
                 transaccion.getEstado_idEstado(),
                 transaccion.getFechaTransaccion(),
                 transaccion.getTipoTransaccion(),
+                obtenerMonto(transaccion.getDocumento_idDocumento()),
                 transaccion.getDescripcion()
             });
         }
@@ -250,9 +256,15 @@ public class TransaccionGUI extends JFrame {
             Date fechaTransaccion = Date.valueOf(txtFechaTransaccion.getText());
             String tipoTransaccion = cbTipoTransaccion.getSelectedItem().toString();
             String descripcion = txtDescripcion.getText();
+            double monto = Double.parseDouble(obtenerMonto(idDocumento));
 
             Transaccion transaccion = new Transaccion(idDocumento, idEstado, fechaTransaccion, tipoTransaccion, descripcion);
             transaccionDAO.insertar(transaccion);
+            try {
+                actualizarMontoCaja(idDocumento, tipoTransaccion, monto);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             JOptionPane.showMessageDialog(this, "Transacción insertada correctamente.");
             loadData();
         } catch (NumberFormatException e) {
@@ -284,7 +296,14 @@ public class TransaccionGUI extends JFrame {
         try {
             int idTransaccion = Integer.parseInt(txtIdTransaccion.getText());
             Transaccion transaccion = new Transaccion(idTransaccion);
+            int idDocumento = Integer.parseInt(txtIdDocumento.getText());
             transaccionDAO.eliminar(transaccion);
+            try {
+                revertirActualizacionCaja(idDocumento);
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
             JOptionPane.showMessageDialog(this, "Transacción eliminada correctamente.");
             loadData();
         } catch (NumberFormatException e) {
@@ -314,7 +333,100 @@ public class TransaccionGUI extends JFrame {
     private void seleccionarEstado() throws SQLException{
         new SeleccionarEstadoGUI(conn, txtIdEstado).setVisible(true);
     }
-    
+
+    private void actualizarMontoCaja(int idDocumento, String tipoTransaccion, double montoDocumento) throws SQLException {
+        double montoCaja = obtenerSaldoCaja(idDocumento); // Obtener el saldo actual de la caja
+        double montoActualizado = montoCaja;
+
+        switch (tipoTransaccion) {
+            case "Deposito":
+                montoActualizado += montoDocumento;
+                break;
+            case "Retiro":
+                montoActualizado -= montoDocumento;
+                break;
+            case "Pago":
+                montoActualizado -= montoDocumento;
+                break;
+            case "Compra":
+                montoActualizado -= montoDocumento;
+                break;
+            case "Venta":
+                montoActualizado += montoDocumento;
+                break;
+            default:
+                break;
+        }
+        
+        // Actualizar el monto en la base de datos
+        String sql = "UPDATE Caja SET monto = ? WHERE idCaja = ?";
+        try (PreparedStatement pst = this.conn.prepareStatement(sql)) {
+            pst.setDouble(1, montoActualizado);
+            pst.setInt(2, obtenerIdCajaPorDocumento(idDocumento));
+            pst.executeUpdate();
+        }
+    }
+
+    private void revertirActualizacionCaja(int idDocumento) throws SQLException {
+        // Obtener el monto de la transacción eliminada
+        double montoDocumento = Double.parseDouble(obtenerMonto(idDocumento));
+
+        // Obtener el saldo actual de la caja
+        double montoCaja = obtenerSaldoCaja(idDocumento);
+
+        // Revertir la actualización del monto en la caja
+        double montoActualizado = montoCaja + montoDocumento;
+
+        // Actualizar el monto en la base de datos
+        String sql = "UPDATE Caja SET monto = ? WHERE idCaja = ?";
+        try (PreparedStatement pst = this.conn.prepareStatement(sql)) {
+            pst.setDouble(1, montoActualizado);
+            pst.setInt(2, obtenerIdCajaPorDocumento(idDocumento));
+            pst.executeUpdate();
+        }
+    }
+
+    private int obtenerIdCajaPorDocumento(int idDocumento) throws SQLException {
+        String sql = "SELECT Caja_idCaja FROM Documento WHERE idDocumento = ?";
+        try (PreparedStatement pst = this.conn.prepareStatement(sql)) {
+            pst.setInt(1, Integer.parseInt(txtIdDocumento.getText()));
+            try (ResultSet rs = pst.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("Caja_idCaja");
+                }
+                return 0;
+            }
+        }
+    }
+    private double obtenerSaldoCaja(int idDocumento) throws SQLException {
+        String sql = "SELECT monto FROM Caja WHERE idCaja = (SELECT Caja_idCaja FROM Documento WHERE idDocumento = ?)";
+        try (PreparedStatement pst = this.conn.prepareStatement(sql)) {
+            pst.setInt(1, idDocumento);
+            try (ResultSet rs = pst.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getDouble("monto");
+                }
+                return 0.0;
+            }
+        }
+    }
+
+    public String obtenerMonto(int idDocumento) {
+        String monto = "";
+        String sql = "SELECT monto FROM Documento WHERE idDocumento = ?";
+        try (PreparedStatement pst = this.conn.prepareStatement(sql)) {
+            pst.setInt(1, idDocumento);
+            try (ResultSet rs = pst.executeQuery()) {
+                if (rs.next()) {
+                    monto = rs.getString("monto");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return monto;
+    }
+
     public static void main(String[] args) {
         // Aquí deberías establecer la conexión a tu base de datos
         // Ejemplo:
