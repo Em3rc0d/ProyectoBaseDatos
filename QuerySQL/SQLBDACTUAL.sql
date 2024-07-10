@@ -324,3 +324,27 @@ GO
 EXEC spEliminarEmpresaReceptora @RUC = 90123456789;
 
 Select * from Movimiento
+
+--MontoTotalPorCajero
+CREATE FUNCTION dbo.fn_TotalMontoPorCajero (@idCajero INT)
+RETURNS FLOAT
+AS
+BEGIN
+    DECLARE @total FLOAT;
+    SELECT @total = SUM(Documento.monto)
+    FROM Documento
+    WHERE Documento.Cajero_idCajero = @idCajero;
+    RETURN @total;
+END;
+
+--NombreCajeroID
+CREATE FUNCTION dbo.fn_NombreCajero (@idCajero INT)
+RETURNS VARCHAR(90)
+AS
+BEGIN
+    DECLARE @nombre VARCHAR(90);
+    SELECT @nombre = CONCAT(nombre, ' ', apellido)
+    FROM Cajero
+    WHERE idCajero = @idCajero;
+    RETURN @nombre;
+END;
