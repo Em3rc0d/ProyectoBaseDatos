@@ -19,6 +19,14 @@ public class Documento {
         this.descripcion = descripcion;
         this.monto = monto;
     }
+    public Documento(int idCaja, int idCajero, String idEmpresa, int idMotivo,
+            float monto) {
+        this.idCaja = idCaja;
+        this.idCajero = idCajero;
+        this.idEmpresa = idEmpresa;
+        this.idMotivo = idMotivo;
+        this.monto = monto;
+    }
     
     public Documento(){
     }

@@ -44,7 +44,6 @@ public class SeleccionarDocumentoGUI extends JFrame {
         model.addColumn("ID Empresa");
         model.addColumn("ID Motivo");
         model.addColumn("Tipo Documento");
-        model.addColumn("Descripción");
         model.addColumn("Monto");
 
         tableDocumentos = new JTable(model);
@@ -76,7 +75,6 @@ public class SeleccionarDocumentoGUI extends JFrame {
                     documento.getIdEmpresa(),
                     documento.getIdMotivo(),
                     obtenerTipoMov(documento.getIdMotivo()),
-                    documento.getDescripcion(),
                     documento.getMonto()
                 });
             }

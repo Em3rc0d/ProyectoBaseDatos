@@ -121,16 +121,8 @@ public class CajeroGUI extends JFrame {
         tableCajeros = new JTable(model);
         add(new JScrollPane(tableCajeros), BorderLayout.CENTER);
     
-        JPanel panelSouth = new JPanel(new GridLayout(1, 2));
-    
-        JButton btnActualizarTabla = new JButton("Actualizar Tabla");
-        btnActualizarTabla.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                loadData();
-            }
-        });
-        panelSouth.add(btnActualizarTabla);
+        JPanel panelSouth = new JPanel(new GridLayout(1, 1));
+
     
         JButton btnRetornar = new JButton("Retornar");
         btnRetornar.addActionListener(new ActionListener() {
@@ -158,7 +150,6 @@ public class CajeroGUI extends JFrame {
         add(panelForm, BorderLayout.WEST);
     }
     
-
     private void loadData() {
         model.setRowCount(0);
         try {

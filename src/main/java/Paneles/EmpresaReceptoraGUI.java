@@ -103,17 +103,8 @@ public class EmpresaReceptoraGUI extends JFrame {
         tableEmpresasReceptoras = new JTable(model);
         add(new JScrollPane(tableEmpresasReceptoras), BorderLayout.CENTER);
     
-        JPanel panelSouth = new JPanel(new GridLayout(1, 2));
-    
-        JButton btnActualizarTabla = new JButton("Actualizar Tabla");
-        btnActualizarTabla.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                loadData();
-            }
-        });
-        panelSouth.add(btnActualizarTabla);
-    
+        JPanel panelSouth = new JPanel(new GridLayout(1, 1));
+
         JButton btnRetornar = new JButton("Retornar");
         btnRetornar.addActionListener(new ActionListener() {
             @Override
