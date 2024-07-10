@@ -271,18 +271,20 @@ public class DocumentoGUI extends JFrame {
 
     private void actualizarDocumento() {
         try {
+            int idDocumento = Integer.parseInt(txtIdDocumento.getText());
             int idCaja = Integer.parseInt(txtIdCaja.getText());
             int idCajero = Integer.parseInt(txtIdCajero.getText());
             String RUC = txtIdEmpresa.getText();
-            int idMotivo = Integer.parseInt(txtIdMovimiento.getText());
+            int idMovimiento = Integer.parseInt(txtIdMovimiento.getText());
             String tipoDocumento = txtTipoDocumento.getText();
             String descripcion = txtDescripcion.getText();
             float monto = Float.parseFloat(txtMonto.getText());
 
-            Documento documento = new Documento(idCaja, idCajero, RUC, idMotivo, tipoDocumento, descripcion, monto);
+            Documento documento = new Documento(idCaja, idCajero, RUC, idMovimiento, tipoDocumento, descripcion, monto);
+            documento.setIdDocumento(idDocumento);
             documentoDAO.actualizar(documento);
             JOptionPane.showMessageDialog(this, "Documento actualizado correctamente.");
-            loadData();
+            loadData(); // Método para recargar los datos en tu interfaz
         } catch (NumberFormatException | SQLException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error al actualizar el documento.");
