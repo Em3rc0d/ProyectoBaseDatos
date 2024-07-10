@@ -245,3 +245,43 @@ ON dbo.Transaccion TO usuario;
 -- Otorgar permisos en el esquema dbo
 GRANT ALTER, CONTROL, DELETE, INSERT, REFERENCES, SELECT, TAKE OWNERSHIP, UNMASK, UPDATE, VIEW CHANGE TRACKING, VIEW DEFINITION
 ON SCHEMA::dbo TO usuario;
+
+--Procedimiento para eliminar una Caja
+CREATE PROCEDURE spEliminarCaja
+    @idCaja INT
+AS
+BEGIN
+    -- Iniciar una transacción
+    BEGIN TRANSACTION;
+
+    -- Manejo de errores
+    BEGIN TRY
+        -- Eliminar las transacciones relacionadas en la tabla Transaccion
+        DELETE FROM Transaccion
+        WHERE Documento_idDocumento IN (
+            SELECT idDocumento
+            FROM Documento
+            WHERE Caja_idCaja = @idCaja
+        );
+
+        -- Eliminar los documentos relacionados en la tabla Documento
+        DELETE FROM Documento
+        WHERE Caja_idCaja = @idCaja;
+
+        -- Eliminar el objeto de la tabla Caja
+        DELETE FROM Caja
+        WHERE idCaja = @idCaja;
+
+        -- Confirmar la transacción
+        COMMIT TRANSACTION;
+    END TRY
+    BEGIN CATCH
+        -- En caso de error, deshacer la transacción
+        ROLLBACK TRANSACTION;
+        -- Mostrar el mensaje de error
+        THROW;
+    END CATCH
+END;
+GO
+-- Ejemplo de uso
+EXEC spEliminarCaja @idCaja = 14;

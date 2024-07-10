@@ -20,6 +20,9 @@ public class Documento {
         this.descripcion = descripcion;
         this.monto = monto;
     }
+    
+    public Documento(){
+    }
 
     public int getIdDocumento() {
         return idDocumento;

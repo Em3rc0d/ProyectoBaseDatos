@@ -15,6 +15,13 @@ public class Cajero {
         this.telefono = telefono;
     }
 
+    public Cajero(String nombre, String apellido, String email, String telefono) {
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.email = email;
+        this.telefono = telefono;
+    }
+
     public int getIdCajero() {
         return idCajero;
     }

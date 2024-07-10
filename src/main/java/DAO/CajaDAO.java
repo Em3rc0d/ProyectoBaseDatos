@@ -37,13 +37,13 @@ public class CajaDAO {
         }
     }
 
-    public void eliminar(int idCaja) throws SQLException {
-        String sql = "DELETE FROM Caja WHERE idCaja = ?";
-        try (PreparedStatement pst = this.conexion.prepareStatement(sql)) {
-            pst.setInt(1, idCaja);
-            pst.executeUpdate();
-        }
-    }
+    // public void eliminar(int idCaja) throws SQLException {
+    //     String sql = "DELETE FROM Caja WHERE idCaja = ?";
+    //     try (PreparedStatement pst = this.conexion.prepareStatement(sql)) {
+    //         pst.setInt(1, idCaja);
+    //         pst.executeUpdate();
+    //     }
+    // }
 
     public List<Caja> obtenerCajas() throws SQLException {
         String sql = "SELECT * FROM Caja";
@@ -72,4 +72,50 @@ public class CajaDAO {
         }
     }
 
+    public void eliminar(int idCaja) throws SQLException {
+        String sql = "EXEC spEliminarCaja @idCaja = ?";
+
+        try (PreparedStatement pst = this.conexion.prepareStatement(sql)) {
+            pst.setInt(1, idCaja);
+            pst.executeUpdate();
+        }
+    }
 }
+
+//-- Script para eliminar caja
+// CREATE PROCEDURE spEliminarCaja
+//     @idCaja INT
+// AS
+// BEGIN
+//     -- Iniciar una transacción
+//     BEGIN TRANSACTION;
+
+//     -- Manejo de errores
+//     BEGIN TRY
+//         -- Eliminar las transacciones relacionadas en la tabla Transaccion
+//         DELETE FROM Transaccion
+//         WHERE Documento_idDocumento IN (
+//             SELECT idDocumento
+//             FROM Documento
+//             WHERE Caja_idCaja = @idCaja
+//         );
+
+//         -- Eliminar los documentos relacionados en la tabla Documento
+//         DELETE FROM Documento
+//         WHERE Caja_idCaja = @idCaja;
+
+//         -- Eliminar el objeto de la tabla Caja
+//         DELETE FROM Caja
+//         WHERE idCaja = @idCaja;
+
+//         -- Confirmar la transacción
+//         COMMIT TRANSACTION;
+//     END TRY
+//     BEGIN CATCH
+//         -- En caso de error, deshacer la transacción
+//         ROLLBACK TRANSACTION;
+//         -- Mostrar el mensaje de error
+//         THROW;
+//     END CATCH
+// END;
+// EXEC spEliminarCaja @idCaja = 14;

@@ -10,80 +10,100 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 
 public class EmpresaReceptoraGUI extends JFrame {
 
     private EmpresaReceptoraDAO empresaReceptoraDAO;
-    private JTextField txtIdEmpresaReceptora, txtRUC, txtNombre, txtTipo;
+    private JTextField txtRUC, txtNombre, txtTipo;
     private JTable tableEmpresasReceptoras;
     private DefaultTableModel model;
+    protected String selectedRUC;
 
     public EmpresaReceptoraGUI(Connection conexion) {
         this.empresaReceptoraDAO = new EmpresaReceptoraDAO(conexion);
         initComponents();
         loadData();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(600, 400);
+        setSize(800, 600); // Ajusta el tamaño de la ventana según sea necesario
         setVisible(true);
         setLocationRelativeTo(null);
     }
 
     private void initComponents() {
         setTitle("Gestión de Empresas Receptoras");
-
-        JPanel panelForm = new JPanel(new GridLayout(5, 2));
-
-        panelForm.add(new JLabel("RUC:"));
-        txtRUC = new JTextField();
-        panelForm.add(txtRUC);
-
-        panelForm.add(new JLabel("Nombre:"));
-        txtNombre = new JTextField();
-        panelForm.add(txtNombre);
-
-        panelForm.add(new JLabel("Tipo:"));
-        txtTipo = new JTextField();
-        panelForm.add(txtTipo);
-
+    
+        JPanel panelForm = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+    
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        panelForm.add(new JLabel("RUC:"), gbc);
+        txtRUC = new JTextField(15);
+        gbc.gridx = 1;
+        panelForm.add(txtRUC, gbc);
+    
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        panelForm.add(new JLabel("Nombre:"), gbc);
+        txtNombre = new JTextField(15);
+        gbc.gridx = 1;
+        panelForm.add(txtNombre, gbc);
+    
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        panelForm.add(new JLabel("Tipo:"), gbc);
+        txtTipo = new JTextField(15);
+        gbc.gridx = 1;
+        panelForm.add(txtTipo, gbc);
+    
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.gridwidth = 2;
         JButton btnInsertar = new JButton("Insertar");
         btnInsertar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 insertarEmpresaReceptora();
+                limpiarInputs();
             }
         });
-        panelForm.add(btnInsertar);
-
+        panelForm.add(btnInsertar, gbc);
+    
+        gbc.gridy = 4;
         JButton btnActualizar = new JButton("Actualizar");
         btnActualizar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 actualizarEmpresaReceptora();
+                limpiarInputs();
             }
         });
-        panelForm.add(btnActualizar);
-
+        panelForm.add(btnActualizar, gbc);
+    
+        gbc.gridy = 5;
         JButton btnEliminar = new JButton("Eliminar");
         btnEliminar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 eliminarEmpresaReceptora();
+                limpiarInputs();
             }
         });
-        panelForm.add(btnEliminar);
-
+        panelForm.add(btnEliminar, gbc);
+    
         model = new DefaultTableModel();
         model.addColumn("RUC");
         model.addColumn("Nombre");
         model.addColumn("Tipo");
-
+    
         tableEmpresasReceptoras = new JTable(model);
         add(new JScrollPane(tableEmpresasReceptoras), BorderLayout.CENTER);
-
-        JPanel panelSouth = new JPanel(new GridLayout(2, 1));
-
+    
+        JPanel panelSouth = new JPanel(new GridLayout(1, 2));
+    
         JButton btnActualizarTabla = new JButton("Actualizar Tabla");
         btnActualizarTabla.addActionListener(new ActionListener() {
             @Override
@@ -92,7 +112,7 @@ public class EmpresaReceptoraGUI extends JFrame {
             }
         });
         panelSouth.add(btnActualizarTabla);
-
+    
         JButton btnRetornar = new JButton("Retornar");
         btnRetornar.addActionListener(new ActionListener() {
             @Override
@@ -101,10 +121,22 @@ public class EmpresaReceptoraGUI extends JFrame {
             }
         });
         panelSouth.add(btnRetornar);
-
+    
+        tableEmpresasReceptoras.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int selectedRow = tableEmpresasReceptoras.getSelectedRow();
+                txtRUC.setText(model.getValueAt(selectedRow, 0).toString());
+                txtNombre.setText(model.getValueAt(selectedRow, 1).toString());
+                txtTipo.setText(model.getValueAt(selectedRow, 2).toString());
+                selectedRUC = model.getValueAt(selectedRow, 0).toString();
+            }
+        });
+    
         add(panelSouth, BorderLayout.SOUTH);
         add(panelForm, BorderLayout.WEST);
     }
+    
 
     private void loadData() {
         model.setRowCount(0);
@@ -139,8 +171,8 @@ public class EmpresaReceptoraGUI extends JFrame {
     }
 
     private void eliminarEmpresaReceptora() {
-        int idEmpresaReceptora = Integer.parseInt(txtIdEmpresaReceptora.getText());
-        EmpresaReceptora empresaReceptora = new EmpresaReceptora("", "", "");
+        String RUC = txtRUC.getText();
+        EmpresaReceptora empresaReceptora = new EmpresaReceptora(RUC, "", "");
         empresaReceptoraDAO.eliminar(empresaReceptora);
         JOptionPane.showMessageDialog(this, "Empresa Receptora eliminada correctamente.");
         loadData();
@@ -149,6 +181,12 @@ public class EmpresaReceptoraGUI extends JFrame {
     private void retornar() {
         new Main().setVisible(true);
         setVisible(false);
+    }
+
+    private void limpiarInputs() {
+        txtRUC.setText("");
+        txtNombre.setText("");
+        txtTipo.setText("");
     }
 
     public static void main(String[] args) {

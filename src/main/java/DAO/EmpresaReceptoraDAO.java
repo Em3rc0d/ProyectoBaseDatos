@@ -32,6 +32,7 @@ public class EmpresaReceptoraDAO {
             pst.setString(1, empresaReceptora.getRUC());
             pst.setString(2, empresaReceptora.getNombre());
             pst.setString(3, empresaReceptora.getTipo());
+            pst.setString(4, empresaReceptora.getRUC());
             pst.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();

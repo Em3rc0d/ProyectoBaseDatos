@@ -21,6 +21,7 @@ public class TransaccionGUI extends JFrame {
     private JTable tableTransacciones;
     private DefaultTableModel model;
     Connection conn;
+    protected int selectedIdTransaccion;
 
     public TransaccionGUI(Connection conexion) {
         this.transaccionDAO = new TransaccionDAO(conexion);
@@ -101,6 +102,7 @@ public class TransaccionGUI extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             insertarTransaccion();
+            limpiarInputs();
         }
     });
     panelForm.add(btnInsertar, gbc);
@@ -111,6 +113,7 @@ public class TransaccionGUI extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             actualizarTransaccion();
+            limpiarInputs();
         }
     });
     panelForm.add(btnActualizar, gbc);
@@ -121,6 +124,7 @@ public class TransaccionGUI extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             eliminarTransaccion();
+            limpiarInputs();
         }
     });
     panelForm.add(btnEliminar, gbc);
@@ -163,6 +167,20 @@ public class TransaccionGUI extends JFrame {
         }
     });
     panelSouth.add(btnRetornar);
+
+    tableTransacciones.addMouseListener(new java.awt.event.MouseAdapter() {
+        @Override
+        public void mouseClicked(java.awt.event.MouseEvent evt) {
+            int selectedRow = tableTransacciones.getSelectedRow();
+            txtIdTransaccion.setText(model.getValueAt(selectedRow, 0).toString());
+            txtIdDocumento.setText(model.getValueAt(selectedRow, 1).toString());
+            txtIdEstado.setText(model.getValueAt(selectedRow, 2).toString());
+            txtFechaTransaccion.setText(model.getValueAt(selectedRow, 3).toString());
+            txtTipoTransaccion.setText(model.getValueAt(selectedRow, 4).toString());
+            txtDescripcion.setText(model.getValueAt(selectedRow, 5).toString());
+            selectedIdTransaccion = Integer.parseInt(model.getValueAt(selectedRow, 0).toString());
+        }
+    });
 
     // Agregar paneles al JFrame principal
     add(panelForm, BorderLayout.CENTER);
@@ -243,6 +261,15 @@ public class TransaccionGUI extends JFrame {
     private void retornar() {
         new Main().setVisible(true);
         setVisible(false);
+    }
+
+    private void limpiarInputs() {
+        txtIdTransaccion.setText("");
+        txtIdDocumento.setText("");
+        txtIdEstado.setText("");
+        txtFechaTransaccion.setText("");
+        txtTipoTransaccion.setText("");
+        txtDescripcion.setText("");
     }
 
     private void seleccionarDocumento(){

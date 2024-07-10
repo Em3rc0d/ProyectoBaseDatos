@@ -1,6 +1,7 @@
 package Paneles;
 
 import DAO.CajaDAO;
+import DAO.DocumentoDAO;
 import Entidades.Caja;
 
 import javax.swing.*;
@@ -13,7 +14,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class CajaGUI extends JFrame {
 
@@ -22,6 +25,7 @@ public class CajaGUI extends JFrame {
     private JTable tableCajas;
     private DefaultTableModel model;
     Connection conn;
+    protected int selectedIdCaja;
 
     public CajaGUI(Connection conexion) {
         this.cajaDAO = new CajaDAO(conexion);
@@ -106,6 +110,7 @@ public class CajaGUI extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             insertarCaja();
+            limpiarInputs();
         }
     });
     gbc.gridx = 0;
@@ -117,6 +122,7 @@ public class CajaGUI extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             actualizarCaja();
+            limpiarInputs();
         }
     });
     gbc.gridx = 1;
@@ -128,8 +134,10 @@ public class CajaGUI extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             eliminarCaja();
+            limpiarInputs();
         }
     });
+
     gbc.gridx = 2;
     gbc.gridy = 4;
     panelForm.add(btnEliminar, gbc);
@@ -162,6 +170,18 @@ public class CajaGUI extends JFrame {
         }
     });
     panelSouth.add(btnRetornar);
+    
+    tableCajas.addMouseListener(new java.awt.event.MouseAdapter() {
+        @Override
+        public void mouseClicked(java.awt.event.MouseEvent evt) {
+            int selectedRow = tableCajas.getSelectedRow();
+            txtIdCaja.setText(model.getValueAt(selectedRow, 0).toString());
+            txtIdArea.setText(model.getValueAt(selectedRow, 1).toString());
+            txtMonto.setText(model.getValueAt(selectedRow, 2).toString());
+            txtTopeMovimiento.setText(model.getValueAt(selectedRow, 3).toString());
+            selectedIdCaja = Integer.parseInt(model.getValueAt(selectedRow, 0).toString());
+        }
+    });
 
     add(panelSouth, BorderLayout.SOUTH);
     add(panelForm, BorderLayout.WEST);
@@ -208,6 +228,7 @@ public class CajaGUI extends JFrame {
             double topeMovimiento = Double.parseDouble(txtTopeMovimiento.getText());
 
             Caja caja = new Caja(idArea, monto, topeMovimiento);
+            caja.setIdCaja(selectedIdCaja);
             cajaDAO.actualizar(caja);
             JOptionPane.showMessageDialog(this, "Caja actualizada correctamente.");
             loadData();
@@ -217,7 +238,7 @@ public class CajaGUI extends JFrame {
         }
     }
 
-    private void eliminarCaja() {
+    private void eliminarCajaInput() {
         try {
             int idCaja = Integer.parseInt(txtIdCaja.getText());
             cajaDAO.eliminar(idCaja);
@@ -228,10 +249,32 @@ public class CajaGUI extends JFrame {
             JOptionPane.showMessageDialog(this, "Error al eliminar la caja.");
         }
     }
+
+    private void eliminarCaja(){
+        int selectedRow = tableCajas.getSelectedRow();
+        if (selectedRow != -1) {
+            int idCaja = (int) model.getValueAt(selectedRow, 0);
+            try {
+                cajaDAO.eliminar(idCaja);
+                loadData();
+                JOptionPane.showMessageDialog(this, "Caja eliminada exitosamente.");
+            } catch (SQLException e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Error al eliminar Caja.");
+            }
+        }
+    }
     
-        private void retornar() {
+    private void retornar() {
         new Main().setVisible(true);
         setVisible(false);
+    }
+
+    private void limpiarInputs() {
+        txtIdCaja.setText("");
+        txtIdArea.setText("");
+        txtMonto.setText("");
+        txtTopeMovimiento.setText("");
     }
 
     private void seleccionarArea() {

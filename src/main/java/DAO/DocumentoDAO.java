@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Entidades.Documento;
+import Entidades.Movimiento;
 
 public class DocumentoDAO {
     
@@ -54,6 +55,14 @@ public class DocumentoDAO {
         }
     }
 
+    public void eliminarDocumentosDeUnaCaja(int idCaja) throws SQLException {
+        String sql = "DELETE FROM Documento WHERE Caja_idCaja = ?";
+        try (PreparedStatement pst = this.conexion.prepareStatement(sql)) {
+            pst.setInt(1, idCaja);
+            pst.executeUpdate();
+        }
+    }
+
     public List<Documento> obtenerDocumentos() throws SQLException {
         String sql = "SELECT * FROM Documento";
         try (PreparedStatement pst = this.conexion.prepareStatement(sql);
@@ -81,5 +90,4 @@ public class DocumentoDAO {
             }
         }
     }
-
 }
