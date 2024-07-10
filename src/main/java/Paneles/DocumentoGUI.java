@@ -19,8 +19,10 @@ public class DocumentoGUI extends JFrame {
     private JTextField txtIdDocumento, txtIdCaja, txtIdCajero, txtIdEmpresa, txtIdMotivo, txtTipoDocumento, txtDescripcion, txtMonto;
     private JTable tableDocumentos;
     private DefaultTableModel model;
+    Connection conn;
 
     public DocumentoGUI(Connection conexion) {
+        conn = conexion;
         this.documentoDAO = new DocumentoDAO(conexion);
         initComponents();
         loadData();
@@ -31,130 +33,161 @@ public class DocumentoGUI extends JFrame {
     }
 
     private void initComponents() {
-        setTitle("Gestión de Documentos");
+    setTitle("Gestión de Documentos");
 
-        JPanel panelForm = new JPanel(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5, 5, 5, 5);
-        gbc.fill = GridBagConstraints.HORIZONTAL;
+    JPanel panelForm = new JPanel(new GridBagLayout());
+    GridBagConstraints gbc = new GridBagConstraints();
+    gbc.insets = new Insets(5, 5, 5, 5);
+    gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        panelForm.add(new JLabel("ID Caja:"), gbc);
-        txtIdCaja = new JTextField(15);
-        gbc.gridx = 1;
-        panelForm.add(txtIdCaja, gbc);
+    gbc.gridx = 0;
+    gbc.gridy = 0;
+    panelForm.add(new JLabel("ID Caja:"), gbc);
+    txtIdCaja = new JTextField(15);
+    gbc.gridx = 1;
+    panelForm.add(txtIdCaja, gbc);
 
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        panelForm.add(new JLabel("ID Cajero:"), gbc);
-        txtIdCajero = new JTextField(15);
-        gbc.gridx = 1;
-        panelForm.add(txtIdCajero, gbc);
+    JButton btnSeleccionarCaja = new JButton("Seleccionar");
+    btnSeleccionarCaja.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            seleccionarCaja();
+        }
+    });
+    gbc.gridx = 2;
+    panelForm.add(btnSeleccionarCaja, gbc);
 
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        panelForm.add(new JLabel("ID Empresa:"), gbc);
-        txtIdEmpresa = new JTextField(15);
-        gbc.gridx = 1;
-        panelForm.add(txtIdEmpresa, gbc);
+    gbc.gridx = 0;
+    gbc.gridy = 1;
+    panelForm.add(new JLabel("ID Cajero:"), gbc);
+    txtIdCajero = new JTextField(15);
+    gbc.gridx = 1;
+    panelForm.add(txtIdCajero, gbc);
 
-        gbc.gridx = 0;
-        gbc.gridy = 3;
-        panelForm.add(new JLabel("ID Motivo:"), gbc);
-        txtIdMotivo = new JTextField(15);
-        gbc.gridx = 1;
-        panelForm.add(txtIdMotivo, gbc);
+    JButton btnSeleccionarCajero = new JButton("Seleccionar");
+    btnSeleccionarCajero.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            seleccionarCajero();
+        }
+    });
+    gbc.gridx = 2;
+    panelForm.add(btnSeleccionarCajero, gbc);
 
-        gbc.gridx = 0;
-        gbc.gridy = 4;
-        panelForm.add(new JLabel("Tipo Documento:"), gbc);
-        txtTipoDocumento = new JTextField(15);
-        gbc.gridx = 1;
-        panelForm.add(txtTipoDocumento, gbc);
+    gbc.gridx = 0;
+    gbc.gridy = 2;
+    panelForm.add(new JLabel("RUC:"), gbc);
+    txtIdEmpresa = new JTextField(15);
+    gbc.gridx = 1;
+    panelForm.add(txtIdEmpresa, gbc);
 
-        gbc.gridx = 0;
-        gbc.gridy = 5;
-        panelForm.add(new JLabel("Descripción:"), gbc);
-        txtDescripcion = new JTextField(15);
-        gbc.gridx = 1;
-        panelForm.add(txtDescripcion, gbc);
+    JButton btnSeleccionarEmpresa = new JButton("Seleccionar");
+    btnSeleccionarEmpresa.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            seleccionarRUC();
+        }
+    });
+    gbc.gridx = 2;
+    panelForm.add(btnSeleccionarEmpresa, gbc);
 
-        gbc.gridx = 0;
-        gbc.gridy = 6;
-        panelForm.add(new JLabel("Monto:"), gbc);
-        txtMonto = new JTextField(15);
-        gbc.gridx = 1;
-        panelForm.add(txtMonto, gbc);
+    gbc.gridx = 0;
+    gbc.gridy = 3;
+    panelForm.add(new JLabel("ID Motivo:"), gbc);
+    txtIdMotivo = new JTextField(15);
+    gbc.gridx = 1;
+    panelForm.add(txtIdMotivo, gbc);
 
-        gbc.gridx = 0;
-        gbc.gridy = 7;
-        gbc.gridwidth = 2;
-        JButton btnInsertar = new JButton("Insertar");
-        btnInsertar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                insertarDocumento();
-            }
-        });
-        panelForm.add(btnInsertar, gbc);
+    gbc.gridx = 0;
+    gbc.gridy = 4;
+    panelForm.add(new JLabel("Tipo Documento:"), gbc);
+    txtTipoDocumento = new JTextField(15);
+    gbc.gridx = 1;
+    panelForm.add(txtTipoDocumento, gbc);
 
-        gbc.gridy = 8;
-        JButton btnActualizar = new JButton("Actualizar");
-        btnActualizar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                actualizarDocumento();
-            }
-        });
-        panelForm.add(btnActualizar, gbc);
+    gbc.gridx = 0;
+    gbc.gridy = 5;
+    panelForm.add(new JLabel("Descripción:"), gbc);
+    txtDescripcion = new JTextField(15);
+    gbc.gridx = 1;
+    panelForm.add(txtDescripcion, gbc);
 
-        gbc.gridy = 9;
-        JButton btnEliminar = new JButton("Eliminar");
-        btnEliminar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                eliminarDocumento();
-            }
-        });
-        panelForm.add(btnEliminar, gbc);
+    gbc.gridx = 0;
+    gbc.gridy = 6;
+    panelForm.add(new JLabel("Monto:"), gbc);
+    txtMonto = new JTextField(15);
+    gbc.gridx = 1;
+    panelForm.add(txtMonto, gbc);
 
-        model = new DefaultTableModel();
-        model.addColumn("ID Documento");
-        model.addColumn("ID Caja");
-        model.addColumn("ID Cajero");
-        model.addColumn("ID Empresa");
-        model.addColumn("ID Motivo");
-        model.addColumn("Tipo Documento");
-        model.addColumn("Descripción");
-        model.addColumn("Monto");
+    gbc.gridx = 0;
+    gbc.gridy = 7;
+    gbc.gridwidth = 2;
+    JButton btnInsertar = new JButton("Insertar");
+    btnInsertar.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            insertarDocumento();
+        }
+    });
+    panelForm.add(btnInsertar, gbc);
 
-        tableDocumentos = new JTable(model);
-        add(new JScrollPane(tableDocumentos), BorderLayout.CENTER);
+    gbc.gridy = 8;
+    JButton btnActualizar = new JButton("Actualizar");
+    btnActualizar.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            actualizarDocumento();
+        }
+    });
+    panelForm.add(btnActualizar, gbc);
 
-        JPanel panelSouth = new JPanel(new GridLayout(1, 2));
+    gbc.gridy = 9;
+    JButton btnEliminar = new JButton("Eliminar");
+    btnEliminar.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            eliminarDocumento();
+        }
+    });
+    panelForm.add(btnEliminar, gbc);
 
-        JButton btnActualizarTabla = new JButton("Actualizar Tabla");
-        btnActualizarTabla.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                loadData();
-            }
-        });
-        panelSouth.add(btnActualizarTabla);
+    model = new DefaultTableModel();
+    model.addColumn("ID Documento");
+    model.addColumn("ID Caja");
+    model.addColumn("ID Cajero");
+    model.addColumn("RUC");
+    model.addColumn("ID Motivo");
+    model.addColumn("Tipo Documento");
+    model.addColumn("Descripción");
+    model.addColumn("Monto");
 
-        JButton btnRetornar = new JButton("Retornar");
-        btnRetornar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                retornar();
-            }
-        });
-        panelSouth.add(btnRetornar);
+    tableDocumentos = new JTable(model);
+    add(new JScrollPane(tableDocumentos), BorderLayout.CENTER);
 
-        add(panelSouth, BorderLayout.SOUTH);
-        add(panelForm, BorderLayout.WEST);
-    }
+    JPanel panelSouth = new JPanel(new GridLayout(1, 2));
+
+    JButton btnActualizarTabla = new JButton("Actualizar Tabla");
+    btnActualizarTabla.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            loadData();
+        }
+    });
+    panelSouth.add(btnActualizarTabla);
+
+    JButton btnRetornar = new JButton("Retornar");
+    btnRetornar.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            retornar();
+        }
+    });
+    panelSouth.add(btnRetornar);
+
+    add(panelSouth, BorderLayout.SOUTH);
+    add(panelForm, BorderLayout.WEST);
+}
+
 
     private void loadData() {
         model.setRowCount(0);
@@ -234,6 +267,19 @@ public class DocumentoGUI extends JFrame {
         setVisible(false);
     }
 
+    private void seleccionarCaja() {
+        new SeleccionarCajaGUI(conn, txtIdCaja).setVisible(true);
+    }
+    
+    private void seleccionarCajero() {
+        new SeleccionarCajeroGUI(conn, txtIdCajero).setVisible(true);
+    }
+
+    private void seleccionarRUC() {
+        new SeleccionarEmpresaReceptoraGUI(conn, txtIdEmpresa).setVisible(true);
+    }
+    
+    
     public static void main(String[] args) {
         // Aquí deberías establecer la conexión a tu base de datos
         // Ejemplo:

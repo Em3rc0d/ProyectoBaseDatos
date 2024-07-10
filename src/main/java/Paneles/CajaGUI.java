@@ -21,9 +21,11 @@ public class CajaGUI extends JFrame {
     private JTextField txtIdCaja, txtIdArea, txtMonto, txtTopeMovimiento;
     private JTable tableCajas;
     private DefaultTableModel model;
+    Connection conn;
 
     public CajaGUI(Connection conexion) {
         this.cajaDAO = new CajaDAO(conexion);
+        conn = conexion;
         initComponents();
         loadData();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -33,86 +35,138 @@ public class CajaGUI extends JFrame {
     }
 
     private void initComponents() {
-        setTitle("Gestión de Cajas");
+    setTitle("Gestión de Cajas");
 
-        JPanel panelForm = new JPanel(new GridLayout(7, 3));
+    JPanel panelForm = new JPanel(new GridBagLayout());
+    GridBagConstraints gbc = new GridBagConstraints();
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    gbc.insets = new Insets(5, 5, 5, 5);
 
-        panelForm.add(new JLabel("ID Caja:"));
-        txtIdCaja = new JTextField();
-        txtIdCaja.setEditable(false);
-        panelForm.add(txtIdCaja);
+    // ID Caja
+    gbc.gridx = 0;
+    gbc.gridy = 0;
+    panelForm.add(new JLabel("ID Caja:"), gbc);
 
-        panelForm.add(new JLabel("ID Área:"));
-        txtIdArea = new JTextField();
-        panelForm.add(txtIdArea);
+    txtIdCaja = new JTextField();
+    txtIdCaja.setEditable(false);
+    gbc.gridx = 1;
+    gbc.gridy = 0;
+    gbc.gridwidth = 2;
+    panelForm.add(txtIdCaja, gbc);
+    gbc.gridwidth = 1; // reset
 
-        panelForm.add(new JLabel("Monto:"));
-        txtMonto = new JTextField();
-        panelForm.add(txtMonto);
+    // ID Área
+    gbc.gridx = 0;
+    gbc.gridy = 1;
+    panelForm.add(new JLabel("ID Área:"), gbc);
 
-        panelForm.add(new JLabel("Tipe Movimiento:"));
-        txtTopeMovimiento = new JTextField();
-        panelForm.add(txtTopeMovimiento);
+    txtIdArea = new JTextField();
+    gbc.gridx = 1;
+    gbc.gridy = 1;
+    panelForm.add(txtIdArea, gbc);
 
-        JButton btnInsertar = new JButton("Insertar");
-        btnInsertar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                insertarCaja();
-            }
-        });
-        panelForm.add(btnInsertar);
+    JButton btnSeleccionarCaja = new JButton("Seleccionar");
+    btnSeleccionarCaja.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            seleccionarArea();
+        }
+    });
+    gbc.gridx = 2;
+    gbc.gridy = 1;
+    panelForm.add(btnSeleccionarCaja, gbc);
 
-        JButton btnActualizar = new JButton("Actualizar");
-        btnActualizar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                actualizarCaja();
-            }
-        });
-        panelForm.add(btnActualizar);
+    // Monto
+    gbc.gridx = 0;
+    gbc.gridy = 2;
+    panelForm.add(new JLabel("Monto:"), gbc);
 
-        JButton btnEliminar = new JButton("Eliminar");
-        btnEliminar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                eliminarCaja();
-            }
-        });
-        panelForm.add(btnEliminar);
+    txtMonto = new JTextField();
+    gbc.gridx = 1;
+    gbc.gridy = 2;
+    gbc.gridwidth = 2;
+    panelForm.add(txtMonto, gbc);
+    gbc.gridwidth = 1; // reset
 
-        model = new DefaultTableModel();
-        model.addColumn("ID Caja");
-        model.addColumn("ID Área");
-        model.addColumn("Monto");
-        model.addColumn("Tope Movimiento");
+    // Tope Movimiento
+    gbc.gridx = 0;
+    gbc.gridy = 3;
+    panelForm.add(new JLabel("Tope Movimiento:"), gbc);
 
-        tableCajas = new JTable(model);
-        add(new JScrollPane(tableCajas), BorderLayout.CENTER);
+    txtTopeMovimiento = new JTextField();
+    gbc.gridx = 1;
+    gbc.gridy = 3;
+    gbc.gridwidth = 2;
+    panelForm.add(txtTopeMovimiento, gbc);
+    gbc.gridwidth = 1; // reset
 
-        JPanel panelSouth = new JPanel(new GridLayout(2, 1));
+    // Botones
+    JButton btnInsertar = new JButton("Insertar");
+    btnInsertar.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            insertarCaja();
+        }
+    });
+    gbc.gridx = 0;
+    gbc.gridy = 4;
+    panelForm.add(btnInsertar, gbc);
 
-        JButton btnActualizarTabla = new JButton("Actualizar Tabla");
-        btnActualizarTabla.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                loadData();
-            }
-        });
-        panelSouth.add(btnActualizarTabla);
+    JButton btnActualizar = new JButton("Actualizar");
+    btnActualizar.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            actualizarCaja();
+        }
+    });
+    gbc.gridx = 1;
+    gbc.gridy = 4;
+    panelForm.add(btnActualizar, gbc);
 
-        JButton btnRetornar = new JButton("Retornar");
-        btnRetornar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                retornar();
-            }
-        });
-        panelSouth.add(btnRetornar);
+    JButton btnEliminar = new JButton("Eliminar");
+    btnEliminar.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            eliminarCaja();
+        }
+    });
+    gbc.gridx = 2;
+    gbc.gridy = 4;
+    panelForm.add(btnEliminar, gbc);
 
-        add(panelSouth, BorderLayout.SOUTH);
-        add(panelForm, BorderLayout.WEST);
-    }
+    model = new DefaultTableModel();
+    model.addColumn("ID Caja");
+    model.addColumn("ID Área");
+    model.addColumn("Monto");
+    model.addColumn("Tope Movimiento");
+
+    tableCajas = new JTable(model);
+    add(new JScrollPane(tableCajas), BorderLayout.CENTER);
+
+    JPanel panelSouth = new JPanel(new GridLayout(2, 1));
+
+    JButton btnActualizarTabla = new JButton("Actualizar Tabla");
+    btnActualizarTabla.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            loadData();
+        }
+    });
+    panelSouth.add(btnActualizarTabla);
+
+    JButton btnRetornar = new JButton("Retornar");
+    btnRetornar.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            retornar();
+        }
+    });
+    panelSouth.add(btnRetornar);
+
+    add(panelSouth, BorderLayout.SOUTH);
+    add(panelForm, BorderLayout.WEST);
+}
+
 
     private void loadData() {
         model.setRowCount(0);
@@ -180,6 +234,10 @@ public class CajaGUI extends JFrame {
         setVisible(false);
     }
 
+    private void seleccionarArea() {
+        new SeleccionarAreaGUI(conn, txtIdArea).setVisible(true);
+    }
+        
     public static void main(String[] args) {
         // Aquí deberías establecer la conexión a tu base de datos
         // Ejemplo:

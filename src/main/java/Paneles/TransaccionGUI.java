@@ -20,9 +20,11 @@ public class TransaccionGUI extends JFrame {
     private JTextField txtIdTransaccion, txtIdDocumento, txtIdEstado, txtFechaTransaccion, txtTipoTransaccion, txtDescripcion;
     private JTable tableTransacciones;
     private DefaultTableModel model;
+    Connection conn;
 
     public TransaccionGUI(Connection conexion) {
         this.transaccionDAO = new TransaccionDAO(conexion);
+        conn = conexion;
         initComponents();
         loadData();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -32,91 +34,146 @@ public class TransaccionGUI extends JFrame {
     }
 
     private void initComponents() {
-        setTitle("Gestión de Transacciones");
+    setTitle("Gestión de Transacciones");
 
-        JPanel panelForm = new JPanel(new GridLayout(7, 2));
-        
-        panelForm.add(new JLabel("ID Documento:"));
-        txtIdDocumento = new JTextField();
-        panelForm.add(txtIdDocumento);
+    JPanel panelForm = new JPanel(new GridBagLayout());
+    GridBagConstraints gbc = new GridBagConstraints();
+    gbc.insets = new Insets(5, 5, 5, 5);
+    gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        panelForm.add(new JLabel("ID Estado:"));
-        txtIdEstado = new JTextField();
-        panelForm.add(txtIdEstado);
+    // Labels y campos de texto para la entrada de datos
+    gbc.gridx = 0;
+    gbc.gridy = 0;
+    panelForm.add(new JLabel("ID Documento:"), gbc);
 
-        panelForm.add(new JLabel("Fecha Transacción (YYYY-MM-DD):"));
-        txtFechaTransaccion = new JTextField();
-        panelForm.add(txtFechaTransaccion);
+    txtIdDocumento = new JTextField(15);
+    gbc.gridx = 1;
+    panelForm.add(txtIdDocumento, gbc);
 
-        panelForm.add(new JLabel("Tipo Transacción:"));
-        txtTipoTransaccion = new JTextField();
-        panelForm.add(txtTipoTransaccion);
+    JButton btnSeleccionarDocumento = new JButton("Seleccionar");
+    btnSeleccionarDocumento.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            seleccionarDocumento();
+        }
+    });
+    gbc.gridx = 2;
+    panelForm.add(btnSeleccionarDocumento, gbc);
 
-        panelForm.add(new JLabel("Descripción:"));
-        txtDescripcion = new JTextField();
-        panelForm.add(txtDescripcion);
+    gbc.gridx = 0;
+    gbc.gridy++;
+    panelForm.add(new JLabel("ID Estado:"), gbc);
 
-        JButton btnInsertar = new JButton("Insertar");
-        btnInsertar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                insertarTransaccion();
-            }
-        });
-        panelForm.add(btnInsertar);
+    txtIdEstado = new JTextField(15);
+    gbc.gridx = 1;
+    panelForm.add(txtIdEstado, gbc);
 
-        JButton btnActualizar = new JButton("Actualizar");
-        btnActualizar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                actualizarTransaccion();
-            }
-        });
-        panelForm.add(btnActualizar);
+    gbc.gridx = 0;
+    gbc.gridy++;
+    panelForm.add(new JLabel("Fecha Transacción (YYYY-MM-DD):"), gbc);
 
-        JButton btnEliminar = new JButton("Eliminar");
-        btnEliminar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                eliminarTransaccion();
-            }
-        });
-        panelForm.add(btnEliminar);
+    txtFechaTransaccion = new JTextField(15);
+    gbc.gridx = 1;
+    panelForm.add(txtFechaTransaccion, gbc);
 
-        model = new DefaultTableModel();
-        model.addColumn("ID Transacción");
-        model.addColumn("ID Documento");
-        model.addColumn("ID Estado");
-        model.addColumn("Fecha Transacción");
-        model.addColumn("Tipo Transacción");
-        model.addColumn("Descripción");
+    gbc.gridx = 0;
+    gbc.gridy++;
+    panelForm.add(new JLabel("Tipo Transacción:"), gbc);
 
-        tableTransacciones = new JTable(model);
-        add(new JScrollPane(tableTransacciones), BorderLayout.CENTER);
+    txtTipoTransaccion = new JTextField(15);
+    gbc.gridx = 1;
+    panelForm.add(txtTipoTransaccion, gbc);
 
-        JPanel panelSouth = new JPanel(new GridLayout(2, 1));
+    gbc.gridx = 0;
+    gbc.gridy++;
+    panelForm.add(new JLabel("Descripción:"), gbc);
 
-        JButton btnActualizarTabla = new JButton("Actualizar Tabla");
-        btnActualizarTabla.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                loadData();
-            }
-        });
-        panelSouth.add(btnActualizarTabla);
+    txtDescripcion = new JTextField(15);
+    gbc.gridx = 1;
+    panelForm.add(txtDescripcion, gbc);
 
-        JButton btnRetornar = new JButton("Retornar");
-        btnRetornar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                retornar();
-            }
-        });
-        panelSouth.add(btnRetornar);
+    // Botones para insertar, actualizar y eliminar
+    gbc.gridx = 0;
+    gbc.gridy++;
+    gbc.gridwidth = 2;
+    JButton btnInsertar = new JButton("Insertar");
+    btnInsertar.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            insertarTransaccion();
+        }
+    });
+    panelForm.add(btnInsertar, gbc);
 
-        add(panelSouth, BorderLayout.SOUTH);
-        add(panelForm, BorderLayout.WEST);
-    }
+    gbc.gridy++;
+    JButton btnActualizar = new JButton("Actualizar");
+    btnActualizar.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            actualizarTransaccion();
+        }
+    });
+    panelForm.add(btnActualizar, gbc);
+
+    gbc.gridy++;
+    JButton btnEliminar = new JButton("Eliminar");
+    btnEliminar.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            eliminarTransaccion();
+        }
+    });
+    panelForm.add(btnEliminar, gbc);
+
+    // Configuración de la tabla de transacciones
+    gbc.gridy++;
+    gbc.gridwidth = 2;
+    gbc.weightx = 1.0;
+    gbc.weighty = 1.0;
+    gbc.fill = GridBagConstraints.BOTH;
+
+    model = new DefaultTableModel();
+    model.addColumn("ID Transacción");
+    model.addColumn("ID Documento");
+    model.addColumn("ID Estado");
+    model.addColumn("Fecha Transacción");
+    model.addColumn("Tipo Transacción");
+    model.addColumn("Descripción");
+
+    tableTransacciones = new JTable(model);
+    panelForm.add(new JScrollPane(tableTransacciones), gbc);
+
+    // Panel inferior con botones de acción y retorno
+    JPanel panelSouth = new JPanel(new GridLayout(2, 1));
+
+    JButton btnActualizarTabla = new JButton("Actualizar Tabla");
+    btnActualizarTabla.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            loadData();
+        }
+    });
+    panelSouth.add(btnActualizarTabla);
+
+    JButton btnRetornar = new JButton("Retornar");
+    btnRetornar.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            retornar();
+        }
+    });
+    panelSouth.add(btnRetornar);
+
+    // Agregar paneles al JFrame principal
+    add(panelForm, BorderLayout.CENTER);
+    add(panelSouth, BorderLayout.SOUTH);
+
+    // Configuraciones finales del JFrame
+    setSize(800, 600); // Ajusta el tamaño según tus necesidades
+    setLocationRelativeTo(null); // Centra la ventana en la pantalla
+    setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Cierra la ventana al presionar la X
+}
+
 
     private void loadData() {
         model.setRowCount(0);
@@ -188,6 +245,10 @@ public class TransaccionGUI extends JFrame {
         setVisible(false);
     }
 
+    private void seleccionarDocumento(){
+        new SeleccionarDocumentoGUI(conn, txtIdDocumento).setVisible(true);
+    }
+    
     public static void main(String[] args) {
         // Aquí deberías establecer la conexión a tu base de datos
         // Ejemplo:
