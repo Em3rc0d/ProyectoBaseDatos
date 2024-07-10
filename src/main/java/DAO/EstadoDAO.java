@@ -16,7 +16,7 @@ public class EstadoDAO {
     }
 
     public void insertar(Estado estado) throws SQLException {
-        String sql = "INSERT INTO estado (idEstado, reporteEstado) VALUES (?, ?)";
+        String sql = "INSERT INTO estado (idEstado, tipoEstado) VALUES (?, ?)";
         try (PreparedStatement pst = this.ConexionBD.prepareStatement(sql)) {
             pst.setInt(1, estado.getIdEstado());
             pst.setString(2, estado.getReporteEstado());
@@ -25,7 +25,7 @@ public class EstadoDAO {
     }
 
     public void actualizar(Estado estado) throws SQLException {
-        String sql = "UPDATE estado SET reporteEstado = ? WHERE idEstado = ?";
+        String sql = "UPDATE estado SET tipoEstado = ? WHERE idEstado = ?";
         try (PreparedStatement pst = this.ConexionBD.prepareStatement(sql)) {
             pst.setString(1, estado.getReporteEstado());
             pst.setInt(2, estado.getIdEstado());
@@ -42,7 +42,7 @@ public class EstadoDAO {
     }
 
     public List<Estado> obtenerEstados() throws SQLException {
-        String sql = "SELECT * FROM estado";
+        String sql = "SELECT * FROM Estado";
         try (PreparedStatement pst = this.ConexionBD.prepareStatement(sql);
              ResultSet rs = pst.executeQuery()) {
 

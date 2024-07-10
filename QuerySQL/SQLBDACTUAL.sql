@@ -285,3 +285,44 @@ END;
 GO
 -- Ejemplo de uso
 EXEC spEliminarCaja @idCaja = 14;
+
+--Procedimiento eliminar Empresa Receptora
+CREATE PROCEDURE spEliminarEmpresaReceptora
+    @RUC VARCHAR(45)
+AS
+BEGIN
+    -- Iniciar una transacción
+    BEGIN TRANSACTION;
+
+    -- Manejo de errores
+    BEGIN TRY
+        -- Eliminar las transacciones relacionadas en la tabla Transaccion
+        DELETE FROM Transaccion
+        WHERE Documento_idDocumento IN (
+            SELECT idDocumento
+            FROM Documento
+            WHERE EmpresaReceptora_RUC = @RUC
+        );
+
+        -- Eliminar los documentos relacionados en la tabla Documento
+        DELETE FROM Documento
+        WHERE EmpresaReceptora_RUC = @RUC;
+
+        -- Eliminar el objeto de la tabla EmpresaReceptora
+        DELETE FROM EmpresaReceptora
+        WHERE RUC = @RUC;
+
+        -- Confirmar la transacción
+        COMMIT TRANSACTION;
+    END TRY
+    BEGIN CATCH
+        -- En caso de error, deshacer la transacción
+        ROLLBACK TRANSACTION;
+        -- Mostrar el mensaje de error
+        THROW;
+    END CATCH
+END;
+GO
+
+--Ejemplo de uso
+EXEC spEliminarEmpresaReceptora @RUC = 90123456789;
