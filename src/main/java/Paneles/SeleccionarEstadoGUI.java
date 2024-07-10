@@ -21,7 +21,7 @@ public class SeleccionarEstadoGUI extends JFrame {
 
     public SeleccionarEstadoGUI(Connection conexion, JTextField txtReporte) throws SQLException {
         this.estadoDAO = new EstadoDAO(conexion);
-        this.txtIdEstado = new JTextField();
+        this.txtIdEstado = txtReporte;
         initComponents();
         loadData();
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -51,11 +51,14 @@ public class SeleccionarEstadoGUI extends JFrame {
     }
 
 
-    private void loadData() throws SQLException {
+    private void loadData() {
         model.setRowCount(0);
         List<Estado> estados = estadoDAO.obtenerEstados();
         for (Estado estado : estados){
-            model.addRow(new Object[] { estado.getIdEstado(), estado.getReporteEstado() });
+            model.addRow(new Object[] { 
+                estado.getIdEstado(), 
+                estado.getReporteEstado() 
+            });
         }
     }
 

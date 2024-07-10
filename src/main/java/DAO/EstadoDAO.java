@@ -41,20 +41,22 @@ public class EstadoDAO {
         }
     }
 
-    public List<Estado> obtenerEstados() throws SQLException {
-        String sql = "SELECT * FROM Estado";
-        try (PreparedStatement pst = this.ConexionBD.prepareStatement(sql);
-             ResultSet rs = pst.executeQuery()) {
-
-            List<Estado> estados = new ArrayList<>();
-            while (rs.next()) {
+    public List<Estado> obtenerEstados(){
+        java.util.List<Estado> estados = new ArrayList<Estado>();
+        try{
+            String sql = "SELECT * FROM estado";
+            PreparedStatement pst = this.ConexionBD.prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
+            while(rs.next()){
                 Estado estado = new Estado(rs.getInt("idEstado"), rs.getString("reporteEstado"));
                 estados.add(estado);
             }
-            return estados;
+        }catch(SQLException e){
+            e.printStackTrace();
         }
+        return estados;
     }
-
+    
     public Estado obtenerEstado(int idEstado) throws SQLException {
         String sql = "SELECT * FROM estado WHERE idEstado = ?";
         try (PreparedStatement pst = this.ConexionBD.prepareStatement(sql)) {
