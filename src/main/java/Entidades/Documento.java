@@ -10,13 +10,12 @@ public class Documento {
     String descripcion;
     float monto;
     
-    public Documento(int idCaja, int idCajero, String idEmpresa, int idMotivo, String tipoDocumento, String descripcion,
+    public Documento(int idCaja, int idCajero, String idEmpresa, int idMotivo, String descripcion,
             float monto) {
         this.idCaja = idCaja;
         this.idCajero = idCajero;
         this.idEmpresa = idEmpresa;
         this.idMotivo = idMotivo;
-        this.tipoDocumento = tipoDocumento;
         this.descripcion = descripcion;
         this.monto = monto;
     }
@@ -62,14 +61,6 @@ public class Documento {
 
     public void setIdMotivo(int idMotivo) {
         this.idMotivo = idMotivo;
-    }
-
-    public String getTipoDocumento() {
-        return tipoDocumento;
-    }
-
-    public void setTipoDocumento(String tipoDocumento) {
-        this.tipoDocumento = tipoDocumento;
     }
 
     public String getDescripcion() {

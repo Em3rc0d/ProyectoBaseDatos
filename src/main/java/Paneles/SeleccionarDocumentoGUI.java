@@ -9,6 +9,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -18,9 +20,11 @@ public class SeleccionarDocumentoGUI extends JFrame {
     private JTable tableDocumentos;
     private DefaultTableModel model;
     private JTextField txtIdDocumento;
+    Connection conn;
 
     public SeleccionarDocumentoGUI(Connection conexion, JTextField txtIdDocumento) {
         this.documentoDAO = new DocumentoDAO(conexion);
+        conn = conexion;
         this.txtIdDocumento = txtIdDocumento;
         initComponents();
         loadData();
@@ -71,7 +75,7 @@ public class SeleccionarDocumentoGUI extends JFrame {
                     documento.getIdCajero(),
                     documento.getIdEmpresa(),
                     documento.getIdMotivo(),
-                    documento.getTipoDocumento(),
+                    obtenerTipoMov(documento.getIdMotivo()),
                     documento.getDescripcion(),
                     documento.getMonto()
                 });
@@ -89,6 +93,19 @@ public class SeleccionarDocumentoGUI extends JFrame {
             dispose();
         } else {
             JOptionPane.showMessageDialog(this, "Seleccione un documento de la tabla.");
+        }
+    }
+
+    public String obtenerTipoMov(int Movimiento_idMovimiento) throws SQLException {
+        String sql = "SELECT * FROM Movimiento WHERE idMovimiento = ?";
+        try (PreparedStatement pst = this.conn.prepareStatement(sql)) {
+            pst.setInt(1, Movimiento_idMovimiento);
+            try (ResultSet rs = pst.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("tipoMovimiento");
+                }
+                return null;
+            }
         }
     }
 

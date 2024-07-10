@@ -10,6 +10,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -121,6 +123,7 @@ public class DocumentoGUI extends JFrame {
         gbc.gridy = 5;
         panelForm.add(new JLabel("Tipo Documento:"), gbc);
         txtTipoDocumento = new JTextField(15);
+        txtTipoDocumento.setEditable(false);
         gbc.gridx = 1;
         panelForm.add(txtTipoDocumento, gbc);
     
@@ -239,7 +242,7 @@ public class DocumentoGUI extends JFrame {
                     documento.getIdCajero(),
                     documento.getIdEmpresa(),
                     documento.getIdMotivo(),
-                    documento.getTipoDocumento(),
+                    obtenerTipoMov(documento.getIdMotivo()),
                     documento.getDescripcion(),
                     documento.getMonto()
                 });
@@ -255,11 +258,10 @@ public class DocumentoGUI extends JFrame {
             int idCajero = Integer.parseInt(txtIdCajero.getText());
             String RUC = txtIdEmpresa.getText();
             int idMotivo = Integer.parseInt(txtIdMovimiento.getText());
-            String tipoDocumento = txtTipoDocumento.getText();
             String descripcion = txtDescripcion.getText();
             float monto = Float.parseFloat(txtMonto.getText());
 
-            Documento documento = new Documento(idCaja, idCajero, RUC, idMotivo, tipoDocumento, descripcion, monto);
+            Documento documento = new Documento(idCaja, idCajero, RUC, idMotivo, descripcion, monto);
             documentoDAO.insertar(documento);
             JOptionPane.showMessageDialog(this, "Documento insertado correctamente.");
             loadData();
@@ -276,11 +278,10 @@ public class DocumentoGUI extends JFrame {
             int idCajero = Integer.parseInt(txtIdCajero.getText());
             String RUC = txtIdEmpresa.getText();
             int idMovimiento = Integer.parseInt(txtIdMovimiento.getText());
-            String tipoDocumento = txtTipoDocumento.getText();
             String descripcion = txtDescripcion.getText();
             float monto = Float.parseFloat(txtMonto.getText());
 
-            Documento documento = new Documento(idCaja, idCajero, RUC, idMovimiento, tipoDocumento, descripcion, monto);
+            Documento documento = new Documento(idCaja, idCajero, RUC, idMovimiento, descripcion, monto);
             documento.setIdDocumento(idDocumento);
             documentoDAO.actualizar(documento);
             JOptionPane.showMessageDialog(this, "Documento actualizado correctamente.");
@@ -335,6 +336,18 @@ public class DocumentoGUI extends JFrame {
         new SeleccionarMovimientoGUI(conn, txtIdMovimiento, txtTipoDocumento).setVisible(true);
     }
     
+    public String obtenerTipoMov(int Movimiento_idMovimiento) throws SQLException {
+        String sql = "SELECT * FROM Movimiento WHERE idMovimiento = ?";
+        try (PreparedStatement pst = this.conn.prepareStatement(sql)) {
+            pst.setInt(1, Movimiento_idMovimiento);
+            try (ResultSet rs = pst.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("tipoMovimiento");
+                }
+                return null;
+            }
+        }
+    }
     public static void main(String[] args) {
         // Aquí deberías establecer la conexión a tu base de datos
         // Ejemplo:
