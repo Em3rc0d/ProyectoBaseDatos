@@ -42,7 +42,7 @@ public class ConsultasGUI extends JFrame {
         agregarBotonConsulta("Cajeros con Mayor Monto por Área (Correlacionada)", Consultas::cajerosConMayorMontoPorAreaCorrelacionada, panelConsultas);
         agregarBotonConsulta("Cajeros con Monto Mayor al Promedio", Consultas::cajerosConMontoMayorAlPromedio, panelConsultas);
         agregarBotonConsulta("Documentos con Monto Superior al Promedio", Consultas::documentosConMontoMayorAlPromedio, panelConsultas);
-        agregarBotonConsulta("Documentos con Monto Superior al Promedio por Categoría", Consultas::documentosConMontoMayorAlPromedioPorCategoria, panelConsultas);
+        agregarBotonConsulta("Documentos con Monto Superior al Promedio por Categoría", Consultas::documentosConMontoMayorAlPromedioPorArea, panelConsultas);
 
         // Agregar nuevas consultas
         agregarBotonConsulta("Total Monto Movido por Cajero", () -> {
@@ -81,33 +81,36 @@ public class ConsultasGUI extends JFrame {
     }
 
     private void ejecutarConsulta(String consulta) {
-        model.setRowCount(0);
-        model.setColumnCount(0);
+    model.setRowCount(0);
+    model.setColumnCount(0);
 
-        try (Statement stmt = conexion.createStatement();
-             ResultSet rs = stmt.executeQuery(consulta)) {
+    System.out.println("Consulta generada: " + consulta);  // Línea añadida para depuración
 
-            ResultSetMetaData metaData = rs.getMetaData();
-            int columnCount = metaData.getColumnCount();
+    try (Statement stmt = conexion.createStatement();
+         ResultSet rs = stmt.executeQuery(consulta)) {
 
-            Vector<String> columnNames = new Vector<>();
-            for (int column = 1; column <= columnCount; column++) {
-                columnNames.add(metaData.getColumnName(column));
-            }
-            model.setColumnIdentifiers(columnNames);
+        ResultSetMetaData metaData = rs.getMetaData();
+        int columnCount = metaData.getColumnCount();
 
-            while (rs.next()) {
-                Vector<String> row = new Vector<>();
-                for (int columnIndex = 1; columnIndex <= columnCount; columnIndex++) {
-                    row.add(rs.getString(columnIndex));
-                }
-                model.addRow(row);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error al ejecutar la consulta.", "Error", JOptionPane.ERROR_MESSAGE);
+        Vector<String> columnNames = new Vector<>();
+        for (int column = 1; column <= columnCount; column++) {
+            columnNames.add(metaData.getColumnName(column));
         }
+        model.setColumnIdentifiers(columnNames);
+
+        while (rs.next()) {
+            Vector<String> row = new Vector<>();
+            for (int columnIndex = 1; columnIndex <= columnCount; columnIndex++) {
+                row.add(rs.getString(columnIndex));
+            }
+            model.addRow(row);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(this, "Error al ejecutar la consulta.", "Error", JOptionPane.ERROR_MESSAGE);
     }
+}
+
 
     private void retornar() {
         Main main = new Main();

@@ -107,15 +107,21 @@ public class Consultas {
         return consulta;
     }
 
-    public static String documentosConMontoMayorAlPromedioPorCategoria() {
-        String consulta = "SELECT D.idDocumento, D.monto, "
-                + "AVG(D.monto) OVER(PARTITION BY D.Categoria) AS PromedioPorCategoria "
-                + "FROM Documento D "
-                + "WHERE D.monto > (SELECT AVG(monto) "
-                + "FROM Documento "
-                + "WHERE Documento.Categoria = D.Categoria);";
-        return consulta;
-    }
+    public static String documentosConMontoMayorAlPromedioPorArea() {
+    String consulta = "SELECT D.idDocumento, D.monto, " +
+                      "(SELECT AVG(D2.monto) " +
+                      " FROM Documento D2 " +
+                      " JOIN Caja C2 ON D2.Caja_idCaja = C2.idCaja " +
+                      " WHERE C2.Area_idArea = C.Area_idArea) AS PromedioPorArea " +
+                      "FROM Documento D " +
+                      "JOIN Caja C ON D.Caja_idCaja = C.idCaja " +
+                      "WHERE D.monto > (SELECT AVG(D2.monto) " +
+                      "                FROM Documento D2 " +
+                      "                JOIN Caja C2 ON D2.Caja_idCaja = C2.idCaja " +
+                      "                WHERE C2.Area_idArea = C.Area_idArea);";
+    return consulta;
+}
+
     
     public static String totalMontoPorCajero(int idCajero) {
         return "DECLARE @idCajero INT = " + idCajero + ";\n" +
