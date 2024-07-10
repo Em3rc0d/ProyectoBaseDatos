@@ -120,7 +120,7 @@ public class ConsultasGUI extends JFrame {
         main.setVisible(true);
         dispose(); // Cierra la ventana actual (ConsultasGUI)
     }
-
+    
     // Interfaz funcional para definir consultas con un retorno de String
     @FunctionalInterface
     private interface ConsultaFuncional {

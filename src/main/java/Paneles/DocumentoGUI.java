@@ -20,6 +20,7 @@ public class DocumentoGUI extends JFrame {
     private JTable tableDocumentos;
     private DefaultTableModel model;
     Connection conn;
+    protected int selectedIdDocumento;
 
     public DocumentoGUI(Connection conexion) {
         conn = conexion;
@@ -33,160 +34,198 @@ public class DocumentoGUI extends JFrame {
     }
 
     private void initComponents() {
-    setTitle("Gestión de Documentos");
+        setTitle("Gestión de Documentos");
+    
+        JPanel panelForm = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+    
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        panelForm.add(new JLabel("ID Documento:"), gbc);
+        txtIdDocumento = new JTextField(15);
+        txtIdDocumento.setEditable(false);
+        gbc.gridx = 1;
+        panelForm.add(txtIdDocumento, gbc);
+    
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        panelForm.add(new JLabel("ID Caja:"), gbc);
+        txtIdCaja = new JTextField(15);
+        gbc.gridx = 1;
+        panelForm.add(txtIdCaja, gbc);
+    
+        JButton btnSeleccionarCaja = new JButton("Seleccionar");
+        btnSeleccionarCaja.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                seleccionarCaja();
+            }
+        });
+        gbc.gridx = 2;
+        panelForm.add(btnSeleccionarCaja, gbc);
+    
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        panelForm.add(new JLabel("ID Cajero:"), gbc);
+        txtIdCajero = new JTextField(15);
+        gbc.gridx = 1;
+        panelForm.add(txtIdCajero, gbc);
+    
+        JButton btnSeleccionarCajero = new JButton("Seleccionar");
+        btnSeleccionarCajero.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                seleccionarCajero();
+            }
+        });
+        gbc.gridx = 2;
+        panelForm.add(btnSeleccionarCajero, gbc);
+    
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        panelForm.add(new JLabel("RUC:"), gbc);
+        txtIdEmpresa = new JTextField(15);
+        gbc.gridx = 1;
+        panelForm.add(txtIdEmpresa, gbc);
+    
+        JButton btnSeleccionarEmpresa = new JButton("Seleccionar");
+        btnSeleccionarEmpresa.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                seleccionarRUC();
+            }
+        });
+        gbc.gridx = 2;
+        panelForm.add(btnSeleccionarEmpresa, gbc);
+    
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        panelForm.add(new JLabel("ID Motivo:"), gbc);
+        txtIdMotivo = new JTextField(15);
+        gbc.gridx = 1;
+        panelForm.add(txtIdMotivo, gbc);
 
-    JPanel panelForm = new JPanel(new GridBagLayout());
-    GridBagConstraints gbc = new GridBagConstraints();
-    gbc.insets = new Insets(5, 5, 5, 5);
-    gbc.fill = GridBagConstraints.HORIZONTAL;
-
-    gbc.gridx = 0;
-    gbc.gridy = 0;
-    panelForm.add(new JLabel("ID Caja:"), gbc);
-    txtIdCaja = new JTextField(15);
-    gbc.gridx = 1;
-    panelForm.add(txtIdCaja, gbc);
-
-    JButton btnSeleccionarCaja = new JButton("Seleccionar");
-    btnSeleccionarCaja.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            seleccionarCaja();
-        }
-    });
-    gbc.gridx = 2;
-    panelForm.add(btnSeleccionarCaja, gbc);
-
-    gbc.gridx = 0;
-    gbc.gridy = 1;
-    panelForm.add(new JLabel("ID Cajero:"), gbc);
-    txtIdCajero = new JTextField(15);
-    gbc.gridx = 1;
-    panelForm.add(txtIdCajero, gbc);
-
-    JButton btnSeleccionarCajero = new JButton("Seleccionar");
-    btnSeleccionarCajero.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            seleccionarCajero();
-        }
-    });
-    gbc.gridx = 2;
-    panelForm.add(btnSeleccionarCajero, gbc);
-
-    gbc.gridx = 0;
-    gbc.gridy = 2;
-    panelForm.add(new JLabel("RUC:"), gbc);
-    txtIdEmpresa = new JTextField(15);
-    gbc.gridx = 1;
-    panelForm.add(txtIdEmpresa, gbc);
-
-    JButton btnSeleccionarEmpresa = new JButton("Seleccionar");
-    btnSeleccionarEmpresa.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            seleccionarRUC();
-        }
-    });
-    gbc.gridx = 2;
-    panelForm.add(btnSeleccionarEmpresa, gbc);
-
-    gbc.gridx = 0;
-    gbc.gridy = 3;
-    panelForm.add(new JLabel("ID Motivo:"), gbc);
-    txtIdMotivo = new JTextField(15);
-    gbc.gridx = 1;
-    panelForm.add(txtIdMotivo, gbc);
-
-    gbc.gridx = 0;
-    gbc.gridy = 4;
-    panelForm.add(new JLabel("Tipo Documento:"), gbc);
-    txtTipoDocumento = new JTextField(15);
-    gbc.gridx = 1;
-    panelForm.add(txtTipoDocumento, gbc);
-
-    gbc.gridx = 0;
-    gbc.gridy = 5;
-    panelForm.add(new JLabel("Descripción:"), gbc);
-    txtDescripcion = new JTextField(15);
-    gbc.gridx = 1;
-    panelForm.add(txtDescripcion, gbc);
-
-    gbc.gridx = 0;
-    gbc.gridy = 6;
-    panelForm.add(new JLabel("Monto:"), gbc);
-    txtMonto = new JTextField(15);
-    gbc.gridx = 1;
-    panelForm.add(txtMonto, gbc);
-
-    gbc.gridx = 0;
-    gbc.gridy = 7;
-    gbc.gridwidth = 2;
-    JButton btnInsertar = new JButton("Insertar");
-    btnInsertar.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            insertarDocumento();
-        }
-    });
-    panelForm.add(btnInsertar, gbc);
-
-    gbc.gridy = 8;
-    JButton btnActualizar = new JButton("Actualizar");
-    btnActualizar.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            actualizarDocumento();
-        }
-    });
-    panelForm.add(btnActualizar, gbc);
-
-    gbc.gridy = 9;
-    JButton btnEliminar = new JButton("Eliminar");
-    btnEliminar.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            eliminarDocumento();
-        }
-    });
-    panelForm.add(btnEliminar, gbc);
-
-    model = new DefaultTableModel();
-    model.addColumn("ID Documento");
-    model.addColumn("ID Caja");
-    model.addColumn("ID Cajero");
-    model.addColumn("RUC");
-    model.addColumn("ID Motivo");
-    model.addColumn("Tipo Documento");
-    model.addColumn("Descripción");
-    model.addColumn("Monto");
-
-    tableDocumentos = new JTable(model);
-    add(new JScrollPane(tableDocumentos), BorderLayout.CENTER);
-
-    JPanel panelSouth = new JPanel(new GridLayout(1, 2));
-
-    JButton btnActualizarTabla = new JButton("Actualizar Tabla");
-    btnActualizarTabla.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            loadData();
-        }
-    });
-    panelSouth.add(btnActualizarTabla);
-
-    JButton btnRetornar = new JButton("Retornar");
-    btnRetornar.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            retornar();
-        }
-    });
-    panelSouth.add(btnRetornar);
-
-    add(panelSouth, BorderLayout.SOUTH);
-    add(panelForm, BorderLayout.WEST);
-}
+        JButton btnSeleccionarMotivo = new JButton("Seleccionar");
+        btnSeleccionarMotivo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                seleccionarMotivo();
+            }
+        });
+        gbc.gridx = 2;
+        panelForm.add(btnSeleccionarMotivo, gbc);
+    
+        gbc.gridx = 0;
+        gbc.gridy = 5;
+        panelForm.add(new JLabel("Tipo Documento:"), gbc);
+        txtTipoDocumento = new JTextField(15);
+        gbc.gridx = 1;
+        panelForm.add(txtTipoDocumento, gbc);
+    
+        gbc.gridx = 0;
+        gbc.gridy = 6;
+        panelForm.add(new JLabel("Descripción:"), gbc);
+        txtDescripcion = new JTextField(15);
+        gbc.gridx = 1;
+        panelForm.add(txtDescripcion, gbc);
+    
+        gbc.gridx = 0;
+        gbc.gridy = 7;
+        panelForm.add(new JLabel("Monto:"), gbc);
+        txtMonto = new JTextField(15);
+        gbc.gridx = 1;
+        panelForm.add(txtMonto, gbc);
+    
+        gbc.gridx = 0;
+        gbc.gridy = 8;
+        gbc.gridwidth = 2;
+        JButton btnInsertar = new JButton("Insertar");
+        btnInsertar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                insertarDocumento();
+                limpiarInputs();
+            }
+        });
+        panelForm.add(btnInsertar, gbc);
+    
+        gbc.gridy = 9;
+        JButton btnActualizar = new JButton("Actualizar");
+        btnActualizar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                actualizarDocumento();
+                limpiarInputs();
+            }
+        });
+        panelForm.add(btnActualizar, gbc);
+    
+        gbc.gridy = 10;
+        JButton btnEliminar = new JButton("Eliminar");
+        btnEliminar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                eliminarDocumento();
+                limpiarInputs();
+            }
+        });
+        panelForm.add(btnEliminar, gbc);
+    
+        model = new DefaultTableModel();
+        model.addColumn("ID Documento");
+        model.addColumn("ID Caja");
+        model.addColumn("ID Cajero");
+        model.addColumn("RUC");
+        model.addColumn("ID Motivo");
+        model.addColumn("Tipo Documento");
+        model.addColumn("Descripción");
+        model.addColumn("Monto");
+    
+        tableDocumentos = new JTable(model);
+        add(new JScrollPane(tableDocumentos), BorderLayout.CENTER);
+    
+        JPanel panelSouth = new JPanel(new GridLayout(1, 2));
+    
+        JButton btnActualizarTabla = new JButton("Actualizar Tabla");
+        btnActualizarTabla.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                loadData();
+            }
+        });
+        panelSouth.add(btnActualizarTabla);
+    
+        JButton btnRetornar = new JButton("Retornar");
+        btnRetornar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                retornar();
+            }
+        });
+        panelSouth.add(btnRetornar);
+    
+        tableDocumentos.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int selectedRow = tableDocumentos.getSelectedRow();
+                txtIdDocumento.setText(model.getValueAt(selectedRow, 0).toString());
+                txtIdCaja.setText(model.getValueAt(selectedRow, 1).toString());
+                txtIdCajero.setText(model.getValueAt(selectedRow, 2).toString());
+                txtIdEmpresa.setText(model.getValueAt(selectedRow, 3).toString());
+                txtIdMotivo.setText(model.getValueAt(selectedRow, 4).toString());
+                txtTipoDocumento.setText(model.getValueAt(selectedRow, 5).toString());
+                txtDescripcion.setText(model.getValueAt(selectedRow, 6).toString());
+                txtMonto.setText(model.getValueAt(selectedRow, 7).toString());
+                selectedIdDocumento = Integer.parseInt(model.getValueAt(selectedRow, 0).toString());
+            }
+        });
+    
+        add(panelSouth, BorderLayout.SOUTH);
+        add(panelForm, BorderLayout.WEST);
+    }
+    
 
 
     private void loadData() {
@@ -267,6 +306,17 @@ public class DocumentoGUI extends JFrame {
         setVisible(false);
     }
 
+    private void limpiarInputs() {
+        txtIdDocumento.setText("");
+        txtIdCaja.setText("");
+        txtIdCajero.setText("");
+        txtIdEmpresa.setText("");
+        txtIdMotivo.setText("");
+        txtTipoDocumento.setText("");
+        txtDescripcion.setText("");
+        txtMonto.setText("");
+    }
+
     private void seleccionarCaja() {
         new SeleccionarCajaGUI(conn, txtIdCaja).setVisible(true);
     }
@@ -278,7 +328,10 @@ public class DocumentoGUI extends JFrame {
     private void seleccionarRUC() {
         new SeleccionarEmpresaReceptoraGUI(conn, txtIdEmpresa).setVisible(true);
     }
-    
+
+    private void seleccionarMotivo() {
+        new SeleccionarMotivoGUI(conn, txtIdMotivo).setVisible(true);
+    }
     
     public static void main(String[] args) {
         // Aquí deberías establecer la conexión a tu base de datos

@@ -2,6 +2,7 @@ package DAO;
 
 import java.sql.Connection;
 
+import Entidades.Area;
 import Entidades.Movimiento;
 
 public class MovimientoDAO {
@@ -77,6 +78,22 @@ public class MovimientoDAO {
             e.printStackTrace();
         }
         return movimiento;
-    }   
+    }
 
+    public java.util.List<Movimiento> obtenerTodos() {
+        java.util.List<Movimiento> movimientos = new java.util.ArrayList<Movimiento>();
+        try {   
+            String sql = "SELECT * FROM Movimiento";
+            java.sql.PreparedStatement pst = this.conexion.prepareStatement(sql);
+            java.sql.ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                Movimiento movimiento = new Movimiento(rs.getString("tipoMovimiento"));
+                movimiento.setIdMovimiento(rs.getInt("idMovimiento"));
+                movimientos.add(movimiento);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();    
+        }
+        return movimientos;
+    }
 }

@@ -18,13 +18,12 @@ public class CajeroDAO {
 
     public void insertar(Cajero cajero) throws SQLException {
 
-        String sql = "INSERT INTO cajero (idCajero, nombre, apellido, email, telefono) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO cajero (nombre, apellido, email, telefono) VALUES (?, ?, ?, ?)";
         try (PreparedStatement pst = this.ConexionBD.prepareStatement(sql)) {
-            pst.setInt(1, cajero.getIdCajero());
-            pst.setString(2, cajero.getNombre());   
-            pst.setString(3, cajero.getApellido());
-            pst.setString(4, cajero.getEmail());
-            pst.setString(5, cajero.getTelefono());
+            pst.setString(1, cajero.getNombre());   
+            pst.setString(2, cajero.getApellido());
+            pst.setString(3, cajero.getEmail());
+            pst.setString(4, cajero.getTelefono());
             pst.executeUpdate();
         }
     }

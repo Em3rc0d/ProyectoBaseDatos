@@ -53,7 +53,18 @@ public class TransaccionDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }   
+    }
+
+    public void eliminarTransaccionDeUnDocumento(int idDocumento) {
+        try {
+            String sql = "DELETE FROM Transaccion WHERE Documento_idDocumento = ?";
+            java.sql.PreparedStatement pst = this.conexion.prepareStatement(sql);
+            pst.setInt(1, idDocumento);
+            pst.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public Transaccion obtener(int idTransaccion) {
         Transaccion transaccion = null;

@@ -12,6 +12,7 @@ public class Caja {
         this.monto = monto;
         this.topeMovimiento = topeMovimiento;
     }
+
     public Caja(int Area_idArea, double monto, double topeMovimiento) {
         this.Area_idArea = Area_idArea;
         this.monto = monto;
@@ -49,5 +50,4 @@ public class Caja {
     public void setTopeMovimiento(float topeMovimiento) {
         this.topeMovimiento = topeMovimiento;
     }
-
 }
