@@ -79,5 +79,57 @@ public class Consultas {
                           "FROM Area;";
         return consulta;
     }
+    
+    public static String cajerosConMontoMayorAlPromedio() {
+        String consulta = "SELECT \n" + 
+                          "    Cajero.nombre,\n" + 
+                          "    SUM(Documento.monto) AS TotalMontoMovido\n" + 
+                          "FROM Documento\n" + 
+                          "JOIN Cajero ON Documento.Cajero_idCajero = Cajero.idCajero\n" + 
+                          "GROUP BY Cajero.nombre\n" + 
+                          "HAVING SUM(Documento.monto) > (\n" + 
+                          "    SELECT AVG(SumaMontos.TotalMonto)\n" + 
+                          "    FROM (\n" + 
+                          "        SELECT SUM(Documento.monto) AS TotalMonto\n" + 
+                          "        FROM Documento\n" + 
+                          "        GROUP BY Documento.Cajero_idCajero\n" + 
+                          "    ) AS SumaMontos\n" + 
+                          ");";
+        return consulta;
+    }
+    
+    // Subconsulta Correlacionada 2: Documentos con Monto Superior al Promedio
+    public static String documentosConMontoMayorAlPromedio() {
+        String consulta = "SELECT D.idDocumento, D.monto, "
+                + "(SELECT AVG(monto) FROM Documento) AS PromedioMonto "
+                + "FROM Documento D "
+                + "WHERE D.monto > (SELECT AVG(monto) FROM Documento);";
+        return consulta;
+    }
 
+    public static String documentosConMontoMayorAlPromedioPorCategoria() {
+        String consulta = "SELECT D.idDocumento, D.monto, "
+                + "AVG(D.monto) OVER(PARTITION BY D.Categoria) AS PromedioPorCategoria "
+                + "FROM Documento D "
+                + "WHERE D.monto > (SELECT AVG(monto) "
+                + "FROM Documento "
+                + "WHERE Documento.Categoria = D.Categoria);";
+        return consulta;
+    }
+    
+    public static String totalMontoPorCajero(int idCajero) {
+        return "DECLARE @idCajero INT = " + idCajero + ";\n" +
+               "DECLARE @total FLOAT;\n" +
+               "SET @total = dbo.fn_TotalMontoPorCajero(@idCajero);\n" +
+               "SELECT @total AS TotalMontoMovido;";
+    }
+
+    // Función para obtener el nombre del cajero por ID
+    public static String nombreCajero(int idCajero) {
+        return "DECLARE @idCajero INT = " + idCajero + ";\n" +
+               "DECLARE @nombre VARCHAR(90);\n" +
+               "SET @nombre = dbo.fn_NombreCajero(@idCajero);\n" +
+               "SELECT @nombre AS NombreCajero;";
+    }
+    
 }
