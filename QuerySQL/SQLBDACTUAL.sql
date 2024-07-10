@@ -164,18 +164,18 @@ VALUES
 
 INSERT INTO Movimiento (tipoMovimiento) 
 VALUES 
-('boleta'),
-('factura'),
-('recibo'),
-('nota de crédito'),
-('cheque'),
-('transferencia'),
-('depósito'),
-('retiro'),
-('abono'),
-('cargo'),
-('comprobante'),
-('voucher');
+('Boleta'),
+('Factura'),
+('Recibo'),
+('Nota de crédito'),
+('Cheque'),
+('Transferencia'),
+('Depósito'),
+('Retiro'),
+('Abono'),
+('Cargo'),
+('Comprobante'),
+('Voucher');
 
 INSERT INTO Documento (Caja_idCaja, Cajero_idCajero, EmpresaReceptora_RUC, Movimiento_idMovimiento,  descripcion, monto)
 VALUES
