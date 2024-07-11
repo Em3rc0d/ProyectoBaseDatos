@@ -42,7 +42,6 @@ public class EmpresaReceptoraGUI extends JFrame {
         gbc.gridy = 0;
         panelForm.add(new JLabel("RUC:"), gbc);
         txtRUC = new JTextField(15);
-        txtRUC.setEditable(false);
         gbc.gridx = 1;
         panelForm.add(txtRUC, gbc);
     
