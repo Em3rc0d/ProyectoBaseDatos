@@ -1,4 +1,4 @@
--- Obtener total de montos movidos por cada cajero en una fecha específica
+-- Obtener total de montos movidos por cada cajero en una fecha especï¿½fica
 SELECT 
     Cajero.nombre,
     SUM(Documento.monto) AS TotalMontoMovido
@@ -8,7 +8,7 @@ JOIN Transaccion ON Documento.idDocumento = Transaccion.Documento_idDocumento
 WHERE Transaccion.fechaTransaccion = '2024-07-10' -- Reemplazar con la fecha deseada
 GROUP BY Cajero.nombre;
 
--- Obetener el número de documentos pendientes por cada área
+-- Obetener el nï¿½mero de documentos pendientes por cada ï¿½rea
 SELECT 
     Area.nombre,
     COUNT(Documento.idDocumento) AS DocumentosPendientes
@@ -20,7 +20,7 @@ LEFT JOIN Estado ON Transaccion.Estado_idEstado = Estado.idEstado
 WHERE Estado.reporteEstado = 'Pendiente'
 GROUP BY Area.nombre;
 
--- Obtener el cajero con el mayor monto movido por área
+-- Obtener el cajero con el mayor monto movido por ï¿½rea
 SELECT 
     Area.nombre AS Area,
     Cajero.nombre AS CajeroNombre,
@@ -47,7 +47,7 @@ FROM Documento
 WHERE Documento.monto > 1000
 ORDER BY Documento.monto DESC;
 
--- Subconsulta correlacionada 1: Obtener el cajero con el mayor monto movido por cada área
+-- Subconsulta correlacionada 1: Obtener el cajero con el mayor monto movido por cada ï¿½rea
 SELECT 
     Area.nombre,
     (SELECT TOP 1 Cajero.nombre
@@ -92,7 +92,7 @@ FROM
 WHERE 
     D.monto > (SELECT AVG(monto) FROM Documento);
 
--- Subconsulta correlacionada 4: Obtener los documentos cuyo monto es mayor al promedio de los montos por área
+-- Subconsulta correlacionada 4: Obtener los documentos cuyo monto es mayor al promedio de los montos por ï¿½rea
 SELECT 
     D.idDocumento, 
     D.descripcion, 
@@ -135,7 +135,7 @@ SET @total = dbo.fn_TotalMontoPorCajero(@idCajero);
 SELECT @total AS TotalMontoMovido;
 
 
--- Función para Obtener el Nombre del Cajero por ID
+-- Funciï¿½n para Obtener el Nombre del Cajero por ID
 CREATE FUNCTION dbo.fn_NombreCajero (@idCajero INT)
 RETURNS VARCHAR(90)
 AS
@@ -160,7 +160,7 @@ CREATE PROCEDURE spEliminarCaja
     @idCaja INT
 AS
 BEGIN
-    -- Iniciar una transacción
+    -- Iniciar una transacciï¿½n
     BEGIN TRANSACTION;
 
     -- Manejo de errores
@@ -181,11 +181,11 @@ BEGIN
         DELETE FROM Caja
         WHERE idCaja = @idCaja;
 
-        -- Confirmar la transacción
+        -- Confirmar la transacciï¿½n
         COMMIT TRANSACTION;
     END TRY
     BEGIN CATCH
-        -- En caso de error, deshacer la transacción
+        -- En caso de error, deshacer la transacciï¿½n
         ROLLBACK TRANSACTION;
         -- Mostrar el mensaje de error
         THROW;
@@ -201,7 +201,7 @@ CREATE PROCEDURE spEliminarEmpresaReceptora
     @RUC VARCHAR(45)
 AS
 BEGIN
-    -- Iniciar una transacción
+    -- Iniciar una transacciï¿½n
     BEGIN TRANSACTION;
 
     -- Manejo de errores
@@ -222,11 +222,11 @@ BEGIN
         DELETE FROM EmpresaReceptora
         WHERE RUC = @RUC;
 
-        -- Confirmar la transacción
+        -- Confirmar la transacciï¿½n
         COMMIT TRANSACTION;
     END TRY
     BEGIN CATCH
-        -- En caso de error, deshacer la transacción
+        -- En caso de error, deshacer la transacciï¿½n
         ROLLBACK TRANSACTION;
         -- Mostrar el mensaje de error
         THROW;
@@ -235,3 +235,17 @@ END;
 GO
 --Ejemplo de uso
 EXEC spEliminarEmpresaReceptora @RUC = 90123456789;
+
+CREATE PROCEDURE EliminarDocumento
+    @idDocumento INT
+AS
+BEGIN
+    -- Eliminar las transacciones relacionadas
+    DELETE FROM Transaccion
+    WHERE Documento_idDocumento = @idDocumento;
+
+    -- Eliminar el documento
+    DELETE FROM Documento
+    WHERE idDocumento = @idDocumento;
+END;
+GO
