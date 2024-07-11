@@ -18,13 +18,14 @@ public class DocumentoDAO {
     }
 
     public void insertar(Documento documento) throws SQLException {
-        String sql = "INSERT INTO Documento (Caja_idCaja, Cajero_idCajero, EmpresaReceptora_RUC, Movimiento_idMovimiento, monto) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Documento (Caja_idCaja, Cajero_idCajero, EmpresaReceptora_RUC, Movimiento_idMovimiento, descripcion, monto) VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement pst = this.conexion.prepareStatement(sql)) {
             pst.setInt(1, documento.getIdCaja());
             pst.setInt(2, documento.getIdCajero());
             pst.setString(3, documento.getIdEmpresa());
             pst.setInt(4, documento.getIdMotivo());
-            pst.setFloat(5, documento.getMonto());
+            pst.setString(5, "null");
+            pst.setFloat(6, documento.getMonto());
             pst.executeUpdate();
         }
     }

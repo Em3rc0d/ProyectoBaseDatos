@@ -71,24 +71,24 @@ CREATE TABLE Transaccion (
     CONSTRAINT FK_Transaccion_Estado FOREIGN KEY (Estado_idEstado) REFERENCES Estado(idEstado)
 );
 
--- Inserci贸n de datos
+-- Inserci髇 de datos
 INSERT INTO Area (nombre)
 VALUES
-    ('Administraci贸n'),
+    ('Administraci髇'),
     ('Recursos Humanos'),
     ('Finanzas'),
     ('Ventas'),
-    ('Producci贸n'),
+    ('Producci髇'),
     ('Servicio al Cliente'),
     ('Desarrollo de Producto'),
-    ('Investigaci贸n y Desarrollo'),
+    ('Investigaci髇 y Desarrollo'),
     ('Marketing'),
-    ('Log铆stica'),
+    ('Log韘tica'),
     ('IT'),
     ('Compras'),
     ('Legales'),
     ('Calidad'),
-    ('Almac茅n');
+    ('Almac閚');
 
 INSERT INTO Caja (Area_idArea, monto, topeMovimiento)
 VALUES
@@ -110,17 +110,17 @@ VALUES
 
 INSERT INTO Cajero (nombre, apellido, email, telefono)
 VALUES
-    ('Juan', 'G贸mez', 'juangomez@example.com', '123-456-7890'),
-    ('Mar铆a', 'L贸pez', 'marialopez@example.com', '987-654-3210'),
-    ('Carlos', 'Mart铆nez', 'carlosmartinez@example.com', '555-123-4567'),
-    ('Ana', 'Rodr铆guez', 'anarodriguez@example.com', '789-321-6540'),
-    ('Pedro', 'S谩nchez', 'pedrosanchez@example.com', '456-789-0123'),
-    ('Laura', 'Garc铆a', 'lauragarcia@example.com', '321-654-9870'),
-    ('Diego', 'P茅rez', 'diegoperez@example.com', '666-999-8888'),
-    ('Sof铆a', 'D铆az', 'sofiadiaz@example.com', '222-333-4444'),
-    ('Javier', 'Fern谩ndez', 'javierfernandez@example.com', '777-888-9999'),
+    ('Juan', 'G髆ez', 'juangomez@example.com', '123-456-7890'),
+    ('Mar韆', 'L髉ez', 'marialopez@example.com', '987-654-3210'),
+    ('Carlos', 'Mart韓ez', 'carlosmartinez@example.com', '555-123-4567'),
+    ('Ana', 'Rodr韌uez', 'anarodriguez@example.com', '789-321-6540'),
+    ('Pedro', 'S醤chez', 'pedrosanchez@example.com', '456-789-0123'),
+    ('Laura', 'Garc韆', 'lauragarcia@example.com', '321-654-9870'),
+    ('Diego', 'P閞ez', 'diegoperez@example.com', '666-999-8888'),
+    ('Sof韆', 'D韆z', 'sofiadiaz@example.com', '222-333-4444'),
+    ('Javier', 'Fern醤dez', 'javierfernandez@example.com', '777-888-9999'),
     ('Elena', 'Vargas', 'elenavargas@example.com', '111-222-3333'),
-    ('Luis', 'Hern谩ndez', 'luishernandez@example.com', '444-555-6666'),
+    ('Luis', 'Hern醤dez', 'luishernandez@example.com', '444-555-6666'),
     ('Marta', 'Ramos', 'martaramos@example.com', '555-666-7777'),
     ('Antonio', 'Ruiz', 'antonioruiz@example.com', '666-777-8888'),
     ('Claudia', 'Mendoza', 'claudiamendoza@example.com', '777-888-9990'),
@@ -128,20 +128,20 @@ VALUES
 
 INSERT INTO EmpresaReceptora (RUC, nombre, tipo)
 VALUES
-    ('12345678901', 'Apple Inc.', 'Tecnolog铆a'),
-    ('23456789012', 'Microsoft Corporation', 'Tecnolog铆a'),
-    ('34567890123', 'Amazon.com Inc.', 'Comercio electr贸nico'),
-    ('45678901234', 'Alphabet Inc. (Google)', 'Tecnolog铆a'),
+    ('12345678901', 'Apple Inc.', 'Tecnolog韆'),
+    ('23456789012', 'Microsoft Corporation', 'Tecnolog韆'),
+    ('34567890123', 'Amazon.com Inc.', 'Comercio electr髇ico'),
+    ('45678901234', 'Alphabet Inc. (Google)', 'Tecnolog韆'),
     ('56789012345', 'Tesla, Inc.', 'Automotriz'),
     ('67890123456', 'Facebook, Inc.', 'Redes sociales'),
-    ('78901234567', 'Samsung Electronics Co., Ltd.', 'Electr贸nica'),
+    ('78901234567', 'Samsung Electronics Co., Ltd.', 'Electr髇ica'),
     ('89012345678', 'Toyota Motor Corporation', 'Automotriz'),
     ('90123456789', 'Walmart Inc.', 'Retail'),
-    ('01234567890', 'Johnson & Johnson', 'Farmac茅utica'),
-    ('11223344556', 'IBM', 'Tecnolog铆a'),
-    ('22334455667', 'Sony', 'Electr贸nica'),
-    ('33445566778', 'Intel', 'Tecnolog铆a'),
-    ('44556677889', 'HP', 'Tecnolog铆a'),
+    ('01234567890', 'Johnson & Johnson', 'Farmac閡tica'),
+    ('11223344556', 'IBM', 'Tecnolog韆'),
+    ('22334455667', 'Sony', 'Electr髇ica'),
+    ('33445566778', 'Intel', 'Tecnolog韆'),
+    ('44556677889', 'HP', 'Tecnolog韆'),
     ('55667788990', 'Cisco', 'Redes');
 
 INSERT INTO Estado (reporteEstado)
@@ -151,7 +151,7 @@ VALUES
     ('Aprobado'),
     ('Rechazado'),
     ('Cancelado'),
-    ('En revisi贸n'),
+    ('En revisi髇'),
     ('Finalizado'),
     ('Suspendido'),
     ('Archivado'),
@@ -159,7 +159,7 @@ VALUES
     ('Anulado'),
     ('Reprogramado'),
     ('Parcialmente aprobado'),
-    ('En evaluaci贸n'),
+    ('En evaluaci髇'),
     ('Completado');
 
 INSERT INTO Movimiento (tipoMovimiento) 
@@ -167,10 +167,10 @@ VALUES
 ('Boleta'),
 ('Factura'),
 ('Recibo'),
-('Nota de cr茅dito'),
+('Nota de cr閐ito'),
 ('Cheque'),
 ('Transferencia'),
-('Dep贸sito'),
+('Dep髎ito'),
 ('Retiro'),
 ('Abono'),
 ('Cargo'),
@@ -181,33 +181,33 @@ INSERT INTO Documento (Caja_idCaja, Cajero_idCajero, EmpresaReceptora_RUC, Movim
 VALUES
     (1, 1, '12345678901', 1, 'Pago por servicios', 1500.00),
     (2, 2, '23456789012', 2, 'Compra de materiales', 2000.00),
-    (3, 3, '34567890123', 3,'Devoluci贸n de productos', 500.00),
+    (3, 3, '34567890123', 3,'Devoluci髇 de productos', 500.00),
     (4, 4, '45678901234', 4, 'Compra de equipos', 3000.00),
     (5, 5, '56789012345', 5, 'Transferencia de fondos', 2500.00),
     (6, 6, '67890123456', 6, 'Pago de servicios', 3500.00),
     (7, 7, '78901234567', 7, 'Compra de suministros', 4500.00),
-    (8, 8, '89012345678', 8, 'Devoluci贸n de fondos', 5500.00),
+    (8, 8, '89012345678', 8, 'Devoluci髇 de fondos', 5500.00),
     (9, 9, '90123456789', 9, 'Pago de deuda', 6500.00),
     (10, 10, '01234567890', 10, 'Transferencia interbancaria', 7500.00),
     (11, 11, '11223344556', 11, 'Pago por servicios', 1500.00),
     (12, 12, '22334455667', 12, 'Compra de materiales', 2000.00),
-    (13, 13, '33445566778', 10, 'Devoluci贸n de productos', 500.00),
+    (13, 13, '33445566778', 10, 'Devoluci髇 de productos', 500.00),
     (14, 14, '44556677889', 5, 'Compra de equipos', 3000.00),
     (15, 15, '55667788990', 7, 'Transferencia de fondos', 2500.00);
 
 INSERT INTO Transaccion (Documento_idDocumento, Estado_idEstado, fechaTransaccion, tipoTransaccion, descripcion)
 VALUES
-    (1, 1, '2024-07-01', 'Dep贸sito', 'Dep贸sito de efectivo'),
+    (1, 1, '2024-07-01', 'Dep髎ito', 'Dep髎ito de efectivo'),
     (2, 2, '2024-07-02', 'Retiro', 'Retiro de fondos'),
     (3, 3, '2024-07-03', 'Pago', 'Pago de factura'),
     (4, 4, '2024-07-04', 'Compra', 'Compra de suministros'),
     (5, 5, '2024-07-05', 'Venta', 'Venta de productos'),
-    (6, 6, '2024-07-06', 'Dep贸sito', 'Dep贸sito en cuenta'),
+    (6, 6, '2024-07-06', 'Dep髎ito', 'Dep髎ito en cuenta'),
     (7, 7, '2024-07-07', 'Retiro', 'Retiro de efectivo'),
     (8, 8, '2024-07-08', 'Pago', 'Pago de servicios'),
     (9, 9, '2024-07-09', 'Compra', 'Compra de activos'),
     (10, 10, '2024-07-10', 'Venta', 'Venta de bienes'),
-    (11, 1, '2024-07-01', 'Dep贸sito', 'Dep贸sito de efectivo'),
+    (11, 1, '2024-07-01', 'Dep髎ito', 'Dep髎ito de efectivo'),
     (12, 2, '2024-07-02', 'Retiro', 'Retiro de fondos'),
     (13, 3, '2024-07-03', 'Pago', 'Pago de factura'),
     (14, 4, '2024-07-04', 'Compra', 'Compra de suministros'),
@@ -241,110 +241,3 @@ ON dbo.Transaccion TO usuario;
 -- Otorgar permisos en el esquema dbo
 GRANT ALTER, CONTROL, DELETE, INSERT, REFERENCES, SELECT, TAKE OWNERSHIP, UNMASK, UPDATE, VIEW CHANGE TRACKING, VIEW DEFINITION
 ON SCHEMA::dbo TO usuario;
-
---Procedimiento para eliminar una Caja
-CREATE PROCEDURE spEliminarCaja
-    @idCaja INT
-AS
-BEGIN
-    -- Iniciar una transacci贸n
-    BEGIN TRANSACTION;
-
-    -- Manejo de errores
-    BEGIN TRY
-        -- Eliminar las transacciones relacionadas en la tabla Transaccion
-        DELETE FROM Transaccion
-        WHERE Documento_idDocumento IN (
-            SELECT idDocumento
-            FROM Documento
-            WHERE Caja_idCaja = @idCaja
-        );
-
-        -- Eliminar los documentos relacionados en la tabla Documento
-        DELETE FROM Documento
-        WHERE Caja_idCaja = @idCaja;
-
-        -- Eliminar el objeto de la tabla Caja
-        DELETE FROM Caja
-        WHERE idCaja = @idCaja;
-
-        -- Confirmar la transacci贸n
-        COMMIT TRANSACTION;
-    END TRY
-    BEGIN CATCH
-        -- En caso de error, deshacer la transacci贸n
-        ROLLBACK TRANSACTION;
-        -- Mostrar el mensaje de error
-        THROW;
-    END CATCH
-END;
-GO
--- Ejemplo de uso
-EXEC spEliminarCaja @idCaja = 14;
-
---Procedimiento eliminar Empresa Receptora
-CREATE PROCEDURE spEliminarEmpresaReceptora
-    @RUC VARCHAR(45)
-AS
-BEGIN
-    -- Iniciar una transacci贸n
-    BEGIN TRANSACTION;
-
-    -- Manejo de errores
-    BEGIN TRY
-        -- Eliminar las transacciones relacionadas en la tabla Transaccion
-        DELETE FROM Transaccion
-        WHERE Documento_idDocumento IN (
-            SELECT idDocumento
-            FROM Documento
-            WHERE EmpresaReceptora_RUC = @RUC
-        );
-
-        -- Eliminar los documentos relacionados en la tabla Documento
-        DELETE FROM Documento
-        WHERE EmpresaReceptora_RUC = @RUC;
-
-        -- Eliminar el objeto de la tabla EmpresaReceptora
-        DELETE FROM EmpresaReceptora
-        WHERE RUC = @RUC;
-
-        -- Confirmar la transacci贸n
-        COMMIT TRANSACTION;
-    END TRY
-    BEGIN CATCH
-        -- En caso de error, deshacer la transacci贸n
-        ROLLBACK TRANSACTION;
-        -- Mostrar el mensaje de error
-        THROW;
-    END CATCH
-END;
-GO
-
---Ejemplo de uso
-EXEC spEliminarEmpresaReceptora @RUC = 90123456789;
-
-Select * from Movimiento
-
---MontoTotalPorCajero
-CREATE FUNCTION dbo.fn_TotalMontoPorCajero (@idCajero INT)
-RETURNS FLOAT
-AS
-BEGIN
-    DECLARE @total FLOAT;
-    SELECT @total = SUM(Documento.monto)
-    FROM Documento
-    WHERE Documento.Cajero_idCajero = @idCajero;
-    RETURN @total;
-END;
-
---NombreCajeroID
-CREATE FUNCTION dbo.fn_NombreCajero (@idCajero INT)
-RETURNS VARCHAR(90)
-AS
-BEGIN
-    DECLARE @nombre VARCHAR(90);
-    SELECT @nombre = CONCAT(nombre, ' ', apellido)
-    FROM Cajero
-    WHERE idCajero = @idCajero;
-    RETURN @nombre;
-END;
