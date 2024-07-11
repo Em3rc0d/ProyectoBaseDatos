@@ -145,9 +145,17 @@ public class EmpresaReceptoraGUI extends JFrame {
         String RUC = txtRUC.getText();
         String nombre = txtNombre.getText();
         String tipo = txtTipo.getText();
-        EmpresaReceptora empresaReceptora = new EmpresaReceptora(RUC, nombre, tipo);
-        empresaReceptoraDAO.insertar(empresaReceptora);
-        JOptionPane.showMessageDialog(this, "Empresa Receptora insertada correctamente.");
+        if(RUC.length()>=9 && RUC.length()<=11){
+            EmpresaReceptora empresaReceptora = new EmpresaReceptora(RUC, nombre, tipo);
+            empresaReceptoraDAO.insertar(empresaReceptora);
+            JOptionPane.showMessageDialog(this, "Empresa Receptora insertada correctamente.");
+        }else{
+            JOptionPane.showMessageDialog(this, "El RUC debe tener entre 9 y 11 dígitos." + 
+            "\n" + 
+            "Ejemplo: 759648123" + 
+            "\n" + 
+            "Por favor, verifique e intente de nuevo.");
+        }
         loadData();
     }
 
