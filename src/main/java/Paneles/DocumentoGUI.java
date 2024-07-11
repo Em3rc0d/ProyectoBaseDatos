@@ -244,7 +244,9 @@ public class DocumentoGUI extends JFrame {
             Documento documento = new Documento(idCaja, idCajero, RUC, idMotivo, monto);
             documentoDAO.insertar(documento);
             JOptionPane.showMessageDialog(this, "Documento insertado correctamente.");
-            loadData();
+            new TransaccionSGUI(conn, obtenerUltimoIdDocumento()).setVisible(true);
+            setVisible(false);
+            // loadData();
         } catch (NumberFormatException | SQLException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error al insertar el documento.");
@@ -326,6 +328,19 @@ public class DocumentoGUI extends JFrame {
             }
         }
     }
+
+    private int obtenerUltimoIdDocumento() throws SQLException {
+        String sql = "SELECT TOP 1 idDocumento FROM Documento ORDER BY idDocumento DESC";
+        try (PreparedStatement pst = this.conn.prepareStatement(sql)) {
+            try (ResultSet rs = pst.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("idDocumento");
+                }
+                return 0; // Retornar 0 si no se encuentra ningún documento
+        }
+    }
+}
+
     public static void main(String[] args) {
         // Aquí deberías establecer la conexión a tu base de datos
         // Ejemplo:

@@ -134,15 +134,15 @@ public class TransaccionGUI extends JFrame {
         gbc.gridy = 6;
         gbc.gridwidth = 1;
         gbc.weightx = 1.0;
-        JButton btnInsertar = new JButton("Insertar");
-        btnInsertar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                insertarTransaccion();
-                limpiarInputs();
-            }
-        });
-        panelForm.add(btnInsertar, gbc);
+        // JButton btnInsertar = new JButton("Insertar");
+        // btnInsertar.addActionListener(new ActionListener() {
+        //     @Override
+        //     public void actionPerformed(ActionEvent e) {
+        //         insertarTransaccion();
+        //         limpiarInputs();
+        //     }
+        // });
+        // panelForm.add(btnInsertar, gbc);
 
         gbc.gridx = 1;
         gbc.weightx = 1.0;
