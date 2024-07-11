@@ -348,13 +348,14 @@ public class TransaccionGUI extends JFrame {
             default:
                 break;
         }
-        
-        // Actualizar el monto en la base de datos
-        String sql = "UPDATE Caja SET monto = ? WHERE idCaja = ?";
-        try (PreparedStatement pst = this.conn.prepareStatement(sql)) {
-            pst.setDouble(1, montoActualizado);
-            pst.setInt(2, obtenerIdCajaPorDocumento(idDocumento));
-            pst.executeUpdate();
+
+        if(txtIdEstado.getText() != "1"){ {
+            String sql = "UPDATE Caja SET monto = ? WHERE idCaja = ?";
+            try (PreparedStatement pst = this.conn.prepareStatement(sql)) {
+                pst.setDouble(1, montoActualizado);
+                pst.setInt(2, obtenerIdCajaPorDocumento(idDocumento));
+                pst.executeUpdate();
+            }}
         }
     }
 

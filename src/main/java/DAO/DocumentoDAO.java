@@ -44,7 +44,8 @@ public class DocumentoDAO {
     }
 
     public void eliminar(int idDocumento) throws SQLException {
-        String sql = "DELETE FROM Documento WHERE idDocumento = ?";
+        String sql = "EXEC EliminarDocumento @idDocumento = ?";
+
         try (PreparedStatement pst = this.conexion.prepareStatement(sql)) {
             pst.setInt(1, idDocumento);
             pst.executeUpdate();

@@ -65,25 +65,11 @@ public class TransaccionSGUI extends JFrame {
         panelForm.add(new JLabel("ID Estado:"), gbc);
 
         txtIdEstado = new JTextField(15);
+        txtIdEstado.setText(String.valueOf("1"));
+        txtIdEstado.setEditable(false);
         gbc.gridx = 1;
         gbc.weightx = 1.0;
         panelForm.add(txtIdEstado, gbc);
-
-        JButton btnSeleccionarEstado = new JButton("Seleccionar");
-        btnSeleccionarEstado.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent e) {
-                try {
-                    seleccionarEstado();
-                } catch (SQLException e1) {
-                    e1.printStackTrace();
-                }
-            }
-        });
-        gbc.gridx = 2;
-        gbc.weightx = 1.0;
-        panelForm.add(btnSeleccionarEstado, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 3;
@@ -134,7 +120,7 @@ public class TransaccionSGUI extends JFrame {
     private void insertarTransaccion() {
         try {
             int idDocumento = this.idDoc;
-            int idEstado = Integer.parseInt(txtIdEstado.getText());
+            int idEstado = 1;
             Date fechaTransaccion = Date.valueOf(txtFechaTransaccion.getText());
             String tipoTransaccion = cbTipoTransaccion.getSelectedItem().toString();
             String descripcion = txtDescripcion.getText();
@@ -188,13 +174,16 @@ public class TransaccionSGUI extends JFrame {
                 break;
         }
 
-        String sql = "UPDATE Caja SET monto = ? WHERE idCaja = ?";
-        try (PreparedStatement pst = this.conn.prepareStatement(sql)) {
-            pst.setDouble(1, montoActualizado);
-            pst.setInt(2, obtenerIdCajaPorDocumento(idDocumento));
-            pst.executeUpdate();
+        if(txtIdEstado.getText() != "1"){ {
+            String sql = "UPDATE Caja SET monto = ? WHERE idCaja = ?";
+            try (PreparedStatement pst = this.conn.prepareStatement(sql)) {
+                pst.setDouble(1, montoActualizado);
+                pst.setInt(2, obtenerIdCajaPorDocumento(idDocumento));
+                pst.executeUpdate();
+            }}
         }
     }
+
 
     private int obtenerIdCajaPorDocumento(int idDocumento) throws SQLException {
         String sql = "SELECT Caja_idCaja FROM Documento WHERE idDocumento = ?";
