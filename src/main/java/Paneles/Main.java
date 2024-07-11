@@ -173,6 +173,7 @@ public class Main extends javax.swing.JFrame {
         int confirm = JOptionPane.showConfirmDialog(this, "¿Estás seguro que deseas salir?", "Confirmar salida", JOptionPane.YES_NO_OPTION);
         if (confirm == JOptionPane.YES_OPTION) {
             dispose(); // Cierra la ventana actual
+            conexion.cerrarConexion();
             System.exit(0); // Termina la ejecución del programa
         }
     }//GEN-LAST:event_btnSalirActionPerformed
