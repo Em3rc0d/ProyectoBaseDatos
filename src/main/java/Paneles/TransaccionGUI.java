@@ -276,6 +276,12 @@ public class TransaccionGUI extends JFrame {
             Transaccion transaccion = new Transaccion(idTransaccion, idDocumento, idEstado, fechaTransaccion, tipoTransaccion, descripcion);
             transaccionDAO.actualizar(transaccion);
             JOptionPane.showMessageDialog(this, "Transacción actualizada correctamente.");
+            try {
+                actualizarMontoCaja(idDocumento,tipoTransaccion,Double.parseDouble(obtenerMonto(idDocumento)));
+            } catch (SQLException e) {
+                
+                e.printStackTrace();
+            }
             loadData();
         } catch (NumberFormatException e) {
             e.printStackTrace();
@@ -349,7 +355,7 @@ public class TransaccionGUI extends JFrame {
                 break;
         }
 
-        if(txtIdEstado.getText() != "1"){ {
+        if(!txtIdEstado.equals("3")){ {
             String sql = "UPDATE Caja SET monto = ? WHERE idCaja = ?";
             try (PreparedStatement pst = this.conn.prepareStatement(sql)) {
                 pst.setDouble(1, montoActualizado);

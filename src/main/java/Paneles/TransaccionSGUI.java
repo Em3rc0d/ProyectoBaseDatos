@@ -174,7 +174,7 @@ public class TransaccionSGUI extends JFrame {
                 break;
         }
 
-        if(txtIdEstado.getText() != "1"){ {
+        if(txtIdEstado.getText().equals("3")){ {
             String sql = "UPDATE Caja SET monto = ? WHERE idCaja = ?";
             try (PreparedStatement pst = this.conn.prepareStatement(sql)) {
                 pst.setDouble(1, montoActualizado);
