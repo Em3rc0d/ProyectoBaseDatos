@@ -79,5 +79,63 @@ public class Consultas {
                           "FROM Area;";
         return consulta;
     }
+    
+    public static String cajerosConMontoMayorAlPromedio() {
+        String consulta = "SELECT \n" + 
+                          "    Cajero.nombre,\n" + 
+                          "    SUM(Documento.monto) AS TotalMontoMovido\n" + 
+                          "FROM Documento\n" + 
+                          "JOIN Cajero ON Documento.Cajero_idCajero = Cajero.idCajero\n" + 
+                          "GROUP BY Cajero.nombre\n" + 
+                          "HAVING SUM(Documento.monto) > (\n" + 
+                          "    SELECT AVG(SumaMontos.TotalMonto)\n" + 
+                          "    FROM (\n" + 
+                          "        SELECT SUM(Documento.monto) AS TotalMonto\n" + 
+                          "        FROM Documento\n" + 
+                          "        GROUP BY Documento.Cajero_idCajero\n" + 
+                          "    ) AS SumaMontos\n" + 
+                          ");";
+        return consulta;
+    }
+    
+    // Subconsulta Correlacionada 2: Documentos con Monto Superior al Promedio
+    public static String documentosConMontoMayorAlPromedio() {
+        String consulta = "SELECT D.idDocumento, D.monto, "
+                + "(SELECT AVG(monto) FROM Documento) AS PromedioMonto "
+                + "FROM Documento D "
+                + "WHERE D.monto > (SELECT AVG(monto) FROM Documento);";
+        return consulta;
+    }
 
+    public static String documentosConMontoMayorAlPromedioPorArea() {
+    String consulta = "SELECT D.idDocumento, D.monto, " +
+                      "(SELECT AVG(D2.monto) " +
+                      " FROM Documento D2 " +
+                      " JOIN Caja C2 ON D2.Caja_idCaja = C2.idCaja " +
+                      " WHERE C2.Area_idArea = C.Area_idArea) AS PromedioPorArea " +
+                      "FROM Documento D " +
+                      "JOIN Caja C ON D.Caja_idCaja = C.idCaja " +
+                      "WHERE D.monto > (SELECT AVG(D2.monto) " +
+                      "                FROM Documento D2 " +
+                      "                JOIN Caja C2 ON D2.Caja_idCaja = C2.idCaja " +
+                      "                WHERE C2.Area_idArea = C.Area_idArea);";
+    return consulta;
+}
+
+    
+    public static String totalMontoPorCajero(int idCajero) {
+        return "DECLARE @idCajero INT = " + idCajero + ";\n" +
+               "DECLARE @total FLOAT;\n" +
+               "SET @total = dbo.fn_TotalMontoPorCajero(@idCajero);\n" +
+               "SELECT @total AS TotalMontoMovido;";
+    }
+
+    // Función para obtener el nombre del cajero por ID
+    public static String nombreCajero(int idCajero) {
+        return "DECLARE @idCajero INT = " + idCajero + ";\n" +
+               "DECLARE @nombre VARCHAR(90);\n" +
+               "SET @nombre = dbo.fn_NombreCajero(@idCajero);\n" +
+               "SELECT @nombre AS NombreCajero;";
+    }
+    
 }

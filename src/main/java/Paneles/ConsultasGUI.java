@@ -27,11 +27,9 @@ public class ConsultasGUI extends JFrame {
         setTitle("Consultas");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // Panel para los botones de consulta
-        JPanel panelConsultas = new JPanel(new GridLayout(7, 1));
+        JPanel panelConsultas = new JPanel(new GridLayout(12, 1));
         panelConsultas.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        // Botones para cada consulta
         agregarBotonConsulta("Total Monto por Cajero en Fecha", () -> {
             String fecha = JOptionPane.showInputDialog(ConsultasGUI.this, "Ingrese la fecha (YYYY-MM-DD):");
             return Consultas.totalMontoPorCajeroEnFecha(fecha);
@@ -42,104 +40,98 @@ public class ConsultasGUI extends JFrame {
         agregarBotonConsulta("Monto Promedio Movido por Caja", Consultas::montoPromedioPorCaja, panelConsultas);
         agregarBotonConsulta("Documentos por Tipo y Monto Mayor a $1000", Consultas::documentosPorTipoYMontoMayorA, panelConsultas);
         agregarBotonConsulta("Cajeros con Mayor Monto por Área (Correlacionada)", Consultas::cajerosConMayorMontoPorAreaCorrelacionada, panelConsultas);
+        agregarBotonConsulta("Cajeros con Monto Mayor al Promedio", Consultas::cajerosConMontoMayorAlPromedio, panelConsultas);
+        agregarBotonConsulta("Documentos con Monto Superior al Promedio", Consultas::documentosConMontoMayorAlPromedio, panelConsultas);
+        agregarBotonConsulta("Documentos con Monto Superior al Promedio por Categoría", Consultas::documentosConMontoMayorAlPromedioPorArea, panelConsultas);
 
-        // Configuración de la tabla de resultados
+        // Agregar nuevas consultas
+        agregarBotonConsulta("Total Monto Movido por Cajero", () -> {
+            int idCajero = Integer.parseInt(JOptionPane.showInputDialog(ConsultasGUI.this, "Ingrese el ID del Cajero:"));
+            return Consultas.totalMontoPorCajero(idCajero);
+        }, panelConsultas);
+
+        agregarBotonConsulta("Nombre del Cajero por ID", () -> {
+            int idCajero = Integer.parseInt(JOptionPane.showInputDialog(ConsultasGUI.this, "Ingrese el ID del Cajero:"));
+            return Consultas.nombreCajero(idCajero);
+        }, panelConsultas);
+
         model = new DefaultTableModel();
         tableResultados = new JTable(model);
 
-        // Agregar la tabla dentro de un JScrollPane para permitir el desplazamiento
         JScrollPane scrollPane = new JScrollPane(tableResultados);
         scrollPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        // Añadir componentes al frame principal
+        JButton btnRetornar = new JButton("Retornar");
+        btnRetornar.addActionListener(e -> retornar());
+        panelConsultas.add(btnRetornar);
+
         add(panelConsultas, BorderLayout.WEST);
         add(scrollPane, BorderLayout.CENTER);
 
-        // Configurar el tamaño y visibilidad de la ventana
-        JButton btnRetornar = new JButton("Retornar");
-        btnRetornar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                retornar();
-            }
-        });
-        panelConsultas.add(btnRetornar);
         setSize(1200, 800);
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
     }
 
-    // Método para agregar un botón de consulta con un nombre y función específica
     private void agregarBotonConsulta(String nombre, ConsultaFuncional consultaFuncional, JPanel panel) {
         JButton boton = new JButton(nombre);
-        boton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ejecutarConsulta(consultaFuncional.ejecutar());
-            }
-        });
+        boton.addActionListener(e -> ejecutarConsulta(consultaFuncional.ejecutar()));
         panel.add(boton);
     }
 
-    // Funcionalidad para ejecutar una consulta y mostrar los resultados en la tabla
     private void ejecutarConsulta(String consulta) {
-        model.setRowCount(0); // Limpiar filas actuales en la tabla
-        model.setColumnCount(0); // Limpiar columnas actuales en la tabla
+    model.setRowCount(0);
+    model.setColumnCount(0);
 
-        try (Statement stmt = conexion.createStatement();
-             ResultSet rs = stmt.executeQuery(consulta)) {
+    System.out.println("Consulta generada: " + consulta);  // Línea añadida para depuración
 
-            ResultSetMetaData metaData = rs.getMetaData();
-            int columnCount = metaData.getColumnCount();
+    try (Statement stmt = conexion.createStatement();
+         ResultSet rs = stmt.executeQuery(consulta)) {
 
-            // Añadir columnas a la tabla
-            Vector<String> columnNames = new Vector<>();
-            for (int column = 1; column <= columnCount; column++) {
-                columnNames.add(metaData.getColumnName(column));
-            }
-            model.setColumnIdentifiers(columnNames);
+        ResultSetMetaData metaData = rs.getMetaData();
+        int columnCount = metaData.getColumnCount();
 
-            // Añadir filas a la tabla
-            while (rs.next()) {
-                Vector<String> row = new Vector<>();
-                for (int columnIndex = 1; columnIndex <= columnCount; columnIndex++) {
-                    row.add(rs.getString(columnIndex));
-                }
-                model.addRow(row);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error al ejecutar la consulta.", "Error", JOptionPane.ERROR_MESSAGE);
+        Vector<String> columnNames = new Vector<>();
+        for (int column = 1; column <= columnCount; column++) {
+            columnNames.add(metaData.getColumnName(column));
         }
+        model.setColumnIdentifiers(columnNames);
+
+        while (rs.next()) {
+            Vector<String> row = new Vector<>();
+            for (int columnIndex = 1; columnIndex <= columnCount; columnIndex++) {
+                row.add(rs.getString(columnIndex));
+            }
+            model.addRow(row);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(this, "Error al ejecutar la consulta.", "Error", JOptionPane.ERROR_MESSAGE);
+    }
+}
+
+
+    private void retornar() {
+        Main main = new Main();
+        main.setVisible(true);
+        dispose();
     }
 
-    // Método para cerrar esta ventana y mostrar la ventana principal
-    private void retornar() {
-        Main main = new Main(); // Reemplazar Main con el nombre de tu clase principal
-        main.setVisible(true);
-        dispose(); // Cierra la ventana actual (ConsultasGUI)
-    }
-    
-    // Interfaz funcional para definir consultas con un retorno de String
     @FunctionalInterface
     private interface ConsultaFuncional {
         String ejecutar();
     }
 
-    // Configuración adicional de la ventana principal
     private void configurarVentana() {
-        setSize(800, 600); // Tamaño predeterminado de la ventana
-        setLocationRelativeTo(null); // Centrar la ventana en la pantalla
+        setSize(800, 600);
+        setLocationRelativeTo(null);
     }
 
     public static void main(String[] args) {
-        // Aquí deberías establecer la conexión a tu base de datos
-        // Ejemplo:
         ConexionBD conexion = new ConexionBD();
         Connection conn = conexion.establecerConexion();
 
-        // Ejemplo básico para mostrar la GUI
         new ConsultasGUI(conn);
     }
 }
