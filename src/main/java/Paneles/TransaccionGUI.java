@@ -355,7 +355,7 @@ public class TransaccionGUI extends JFrame {
                 break;
         }
 
-        if(!txtIdEstado.equals("3")){ {
+        if(txtIdEstado.getText().equals("3")){ {
             String sql = "UPDATE Caja SET monto = ? WHERE idCaja = ?";
             try (PreparedStatement pst = this.conn.prepareStatement(sql)) {
                 pst.setDouble(1, montoActualizado);
